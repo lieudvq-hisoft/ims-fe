@@ -4,9 +4,25 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Row, Col } from "antd";
 import styles from "../styles/login.module.css";
 import { Card } from "antd/lib";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+
 const LoginComponent: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+  const router = useRouter();
+
+  const onFinish = async (values: any) => {
+    const res: any = await signIn("", {
+      redirect: false,
+      username: values.username,
+      password: values.password,
+    });
+    console.log(res);
+    // if (res.error) {
+    //   return toast.error(res.error);
+    // } else {
+    //   return router.push("/");
+    // }
   };
 
   return (

@@ -55,7 +55,7 @@ const SliderComponent: React.FC = () => {
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={[sliderMenuItemSelectedKey]}
+        selectedKeys={[sliderMenuItemSelectedKey]}
         items={items}
         onSelect={async (info) => {
           dispatch(setSliderMenuItemSelectedKey(info.key));
