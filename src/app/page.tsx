@@ -8,6 +8,7 @@ import store from "@/store";
 import { persistStore } from "redux-persist";
 import { Provider } from "react-redux";
 import SliderComponent from "@/components/layout/Slider";
+import { PersistGate } from "redux-persist/integration/react";
 
 const { Content } = Layout;
 
@@ -23,20 +24,22 @@ const Home: React.FC<Props> = (props) => {
   } = theme.useToken();
   return (
     <Provider store={store}>
-      <Layout>
-        <HeaderComponent />
-        <Layout className={styles["ant-layout"]}>
-          <SliderComponent />
-          <Content
-            style={{
-              margin: "16px",
-              background: colorBgContainer,
-            }}
-          >
-            <div className="h-screen">{content}</div>
-          </Content>
+      <PersistGate loading={<div>loading</div>} persistor={persistor}>
+        <Layout>
+          <HeaderComponent />
+          <Layout className={styles["ant-layout"]}>
+            <SliderComponent />
+            <Content
+              style={{
+                margin: "16px",
+                background: colorBgContainer,
+              }}
+            >
+              <div className="h-screen">{content}</div>
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+      </PersistGate>
     </Provider>
   );
 };
