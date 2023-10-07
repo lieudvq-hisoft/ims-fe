@@ -2,7 +2,7 @@
 import React from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Row, Col } from "antd";
-import styles from "../styles/login.module.css";
+import styles from "@/styles/login.module.css";
 import { Card } from "antd/lib";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -12,17 +12,18 @@ const LoginComponent: React.FC = () => {
   const router = useRouter();
 
   const onFinish = async (values: any) => {
-    const res: any = await signIn("", {
+    const res: any = await signIn("cusCredentials", {
       redirect: false,
       username: values.username,
       password: values.password,
     });
-    console.log(res);
-    // if (res.error) {
-    //   return toast.error(res.error);
-    // } else {
-    //   return router.push("/");
-    // }
+    sessionStorage.clear();
+    if (!res) {
+      return router.push("/signin");
+    } else {
+      console.log(res);
+      return router.push("/");
+    }
   };
 
   return (
@@ -34,7 +35,7 @@ const LoginComponent: React.FC = () => {
             name="normal_login"
             className={styles["login-form"]}
             initialValues={{ remember: true }}
-            onFinish={onFinish}
+            onFinish = {onFinish}
           >
             <Form.Item
               name="username"

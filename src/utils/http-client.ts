@@ -9,7 +9,6 @@ interface Options {
   signal?: AbortSignal;
   contentType?: string;
   responseType?: ResponseType;
-  // onUploadProgress: () => void;
   authorization?: string;
   routing?: string;
   token?: string;

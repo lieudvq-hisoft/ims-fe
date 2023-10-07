@@ -1,6 +1,7 @@
-export const url = "https://imsapi.hisoft.vn";
-// export const urlServerSide = "http://192.168.40.83:8000";
-export const urlServerSide = "https://imsapi.hisoft.vn";
+//export const url = "https://imsapi.hisoft.vn";
+export const url = "https://127.0.0.1:7234";
+export const urlServerSide = "https://127.0.0.1:7234";
+//export const urlServerSide = "https://imsapi.hisoft.vn";
 
 const apiLinks = {
   user: {
@@ -9,8 +10,7 @@ const apiLinks = {
   customer: {
     create: `${url}/api/Customer`,
     update: `${url}/api/Customer`,
-    get: `${url}/api/Customer`,
-   
+    get: `${url}/api/Customer`
   },
 };
 
