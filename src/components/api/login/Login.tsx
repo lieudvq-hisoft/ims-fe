@@ -19,9 +19,9 @@ const LoginComponent: React.FC = () => {
     });
     sessionStorage.clear();
     if (!res) {
-      sessionStorage.setItem("res", "huhu");
       return router.push("/signin");
     } else {
+      console.log(res);
       return router.push("/");
     }
   };

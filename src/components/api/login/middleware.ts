@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
       break;
     case "/":
       if (!token || !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/view/languageId/1/10/categoryId`);
+        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/signin`);
       }
       break;
   }
