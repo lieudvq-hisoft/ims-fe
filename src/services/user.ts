@@ -17,7 +17,7 @@ const login = async (
 };
 
 const authService = {
-  login,
+  login
 };
 
 export default authService;
