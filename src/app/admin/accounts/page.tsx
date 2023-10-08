@@ -1,9 +1,9 @@
-import React from "react";
-import Home from "../page";
-import TicketListTable from "@/components/ticket/TicketListTable";
-import SearchTicketList from "@/components/ticket/SearchTicketList";
+//trang của admin
 
-// trang của sale
+import AccountTable from "@/components/account/AccountTable";
+import React from "react";
+import CreateAccountButton from "@/components/account/CreateAccountButton";
+import Home from "@/app/page";
 
 export default function page() {
   return (
@@ -12,12 +12,12 @@ export default function page() {
         <>
           <div style={{ padding: "14px" }}>
             <h1 style={{ paddingBottom: "10px", textAlign: "center" }}>
-              Danh Sách Yêu Cầu
+              TÀI KHOẢN KHÁCH HÀNG
             </h1>
-            <SearchTicketList />
+            <CreateAccountButton />
           </div>
           <div style={{ paddingTop: "10px" }}>
-            <TicketListTable />
+            <AccountTable />
           </div>
         </>
       }

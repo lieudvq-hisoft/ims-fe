@@ -35,7 +35,7 @@ const LoginComponent: React.FC = () => {
             name="normal_login"
             className={styles["login-form"]}
             initialValues={{ remember: true }}
-            onFinish = {onFinish}
+            onFinish={onFinish}
           >
             <Form.Item
               name="username"
@@ -54,7 +54,7 @@ const LoginComponent: React.FC = () => {
                 { required: true, message: "Please input your Password!" },
               ]}
             >
-              <Input
+              <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 placeholder="Password"

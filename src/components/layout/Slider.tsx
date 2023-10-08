@@ -25,12 +25,13 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem("Accounts", "sub1", <UserOutlined />, [
-    getItem("All Account", "accounts"),
+    getItem("All Account", "admin/accounts"),
     getItem("Customer", "customer"),
     getItem("Manager", "manager"),
   ]),
-  getItem("Customers", "customers", <UserOutlined />),
-  getItem("Tickets", "tickets", <UserOutlined />),
+  getItem("Customers", "sales/customers", <UserOutlined />),
+  getItem("Tickets", "sales/tickets", <UserOutlined />),
+  getItem("Tài khoản của tôi", "myaccount", <UserOutlined />),
 ];
 
 const { Sider } = Layout;

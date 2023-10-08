@@ -1,9 +1,8 @@
-import AccountTable from "@/components/account/AccountTable";
 import React from "react";
 import Home from "../page";
-import CreateAccountButton from "@/components/account/CreateAccountButton";
+import InfomationForm from "@/components/myaccount/InfomationForm";
 
-//trang của admin
+//trang này chung, của tài khoản cá nhân
 
 export default function page() {
   return (
@@ -12,12 +11,11 @@ export default function page() {
         <>
           <div style={{ padding: "14px" }}>
             <h1 style={{ paddingBottom: "10px", textAlign: "center" }}>
-              Tài Khoản Khách Hàng
+              THÔNG TIN TÀI KHOẢN CÁ NHÂN
             </h1>
-            <CreateAccountButton />
           </div>
           <div style={{ paddingTop: "10px" }}>
-            <AccountTable />
+            <InfomationForm />
           </div>
         </>
       }
