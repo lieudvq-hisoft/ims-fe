@@ -3,7 +3,7 @@
 import AccountTable from "@/components/account/AccountTable";
 import React from "react";
 import CreateAccountButton from "@/components/account/CreateAccountButton";
-import Home from "@/app/page";
+import Home from "@/app/home/page";
 
 export default function page() {
   return (

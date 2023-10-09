@@ -12,7 +12,7 @@ import { CustomerData } from "@/models/customer";
 import useDispatch from "@/hooks/use-dispatch";
 import { Provider } from "react-redux";
 import store from "@/store";
-import Home from "@/app/page";
+import Home from "@/app/home/page";
 
 export default function page() {
   // const dispatch = useDispatch();

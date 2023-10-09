@@ -1,5 +1,5 @@
 import React from "react";
-import Home from "../page";
+import Home from "../home/page";
 import InfomationForm from "@/components/myaccount/InfomationForm";
 
 //trang này chung, của tài khoản cá nhân

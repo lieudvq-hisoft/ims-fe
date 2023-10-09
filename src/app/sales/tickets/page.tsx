@@ -3,7 +3,7 @@
 import React from "react";
 import TicketListTable from "@/components/ticket/TicketListTable";
 import SearchTicketList from "@/components/ticket/SearchTicketList";
-import Home from "@/app/page";
+import Home from "@/app/home/page";
 
 export default function page() {
   return (

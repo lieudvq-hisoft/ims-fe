@@ -17,11 +17,9 @@ const LoginComponent: React.FC = () => {
       username: values.username,
       password: values.password,
     });
-    sessionStorage.clear();
-    if (!res) {
-      return router.push("/signin");
+    if (res.error) {
+      return toast.error(res.error);
     } else {
-      console.log(res);
       return router.push("/");
     }
   };
