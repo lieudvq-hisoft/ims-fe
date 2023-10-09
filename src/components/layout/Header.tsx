@@ -6,14 +6,15 @@ import {
   MenuUnfoldOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Button, theme, Row, Col, Avatar } from "antd";
+import { Layout, Menu, Button, theme, Row, Col } from "antd";
 import { setCollapsed, setSliderMenuItemSelectedKey } from "@/slices/global";
 import { useRouter } from "next/navigation";
 import useDispatch from "@/hooks/use-dispatch";
 import useSelector from "@/hooks/use-selector";
 import { MenuProps } from "antd/lib";
+import Ava from "./Ava";
 
-const { Header, Sider, Content } = Layout;
+const { Header } = Layout;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -77,9 +78,7 @@ const HeaderComponent: React.FC = () => {
           </Col>
           <Col md={6}>
             <div style={{ textAlign: "end" }}>
-              <Avatar size="default" icon={<UserOutlined />}>
-                Trần Anh Tuấn
-              </Avatar>
+              <Ava />
             </div>
           </Col>
         </Row>
