@@ -1,6 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { isExpiredTimeToken } from "@/utils/token-exp-checker";
+import { decodeJwt } from "@/utils/decode-jwt";
 
 export async function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
@@ -8,13 +9,15 @@ export async function middleware(req: NextRequest) {
     req,
     secret: process.env.NEXTAUTH_SECRET,
   })) as any;
+  const role = decodeJwt(token.access_token);
+  console.log(role['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
   switch (pathname) {
     case "/":
       //có token, chưa hết hạn login => so role (demo 2 role: admin + sales-staff)
       if (token && !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
-        if (token.userName === "admin") {
+        if (role === "Admin") {
           return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/admin/accounts`);
-        } else if (token.userName === "staff") {
+        } else if (role === "Staff") {
           return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/sales/customers`);
         }
         break;
