@@ -23,24 +23,22 @@ const Home: React.FC<Props> = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
   return (
-    <Provider store={store}>
-      <PersistGate loading={<div>loading</div>} persistor={persistor}>
-        <Layout>
-          <HeaderComponent />
-          <Layout className={styles["ant-layout"]}>
-            <SliderComponent />
-            <Content
-              style={{
-                margin: "16px",
-                background: colorBgContainer,
-              }}
-            >
-              <div className="h-screen">{content}</div>
-            </Content>
-          </Layout>
+    <PersistGate loading={<div>loading</div>} persistor={persistor}>
+      <Layout>
+        <HeaderComponent />
+        <Layout className={styles["ant-layout"]}>
+          <SliderComponent />
+          <Content
+            style={{
+              margin: "16px",
+              background: colorBgContainer,
+            }}
+          >
+            <div className="h-screen">{content}</div>
+          </Content>
         </Layout>
-      </PersistGate>
-    </Provider>
+      </Layout>
+    </PersistGate>
   );
 };
 
