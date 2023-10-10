@@ -2,7 +2,11 @@
 import React from "react";
 import { Layout, Menu, MenuProps, theme } from "antd";
 import { setSliderMenuItemSelectedKey } from "@/slices/global";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  TableOutlined,
+  SnippetsOutlined,
+} from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import useDispatch from "@/hooks/use-dispatch";
 import useSelector from "@/hooks/use-selector";
@@ -28,6 +32,20 @@ const items: MenuItem[] = [
     getItem("All Account", "admin/accounts"),
     getItem("Customer", "customer"),
     getItem("Manager", "manager"),
+  ]),
+  getItem("Sơ Đồ Server", "technical/maps", <TableOutlined />, [
+    getItem("Khu A", "khuA", <TableOutlined />, [
+      getItem("A1", "techical/maps/"),
+      getItem("A2", "A"),
+    ]),
+    getItem("Khu B", "khuB", <TableOutlined />, [
+      getItem("B1", "B1"),
+      getItem("B2", "B2"),
+    ]),
+  ]),
+  getItem("Yêu cầu Khách hàng", "technical/requests", <SnippetsOutlined />, [
+    getItem("Đã duyệt", "technical/requests"),
+    getItem("Ủy quyền", ""),
   ]),
   getItem("Customers", "sales/customers", <UserOutlined />),
   getItem("Tickets", "sales/tickets", <UserOutlined />),
