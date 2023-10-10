@@ -21,7 +21,7 @@ export async function middleware(req: NextRequest) {
   switch (pathname) {
     case "/":
       //có token, chưa hết hạn login => so role (demo 2 role: admin + sales-staff)
-      if (token && !isExpiredTimeToken(token.loginDate, token.expiresIn)) {
+      if (token && !isExpiredTimeToken(token.loginDate, token.expires_in)) {
         if (role === "Admin") {
           return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/admin/accounts`);
         } else if (role === "Staff") {
@@ -29,12 +29,12 @@ export async function middleware(req: NextRequest) {
         }
         break;
         //ko có token hoặc hết hạn login
-      } else if (!token || isExpiredTimeToken(token.loginDate, token.expiresIn)) {
+      } else if (!token || isExpiredTimeToken(token.loginDate, token.expires_in)) { // 
         return NextResponse.redirect(`${origin}`);
       }
     case "/sales/customers":
     case "/sales/tickets":
-      if (!token || isExpiredTimeToken(token.loginDate, token.expiresIn) || token.userName !== "staff") {
+      if (!token || isExpiredTimeToken(token.loginDate, token.expires_in) || token.userName !== "staff") {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
       } else {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}${pathname}`);
