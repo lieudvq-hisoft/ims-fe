@@ -7,7 +7,7 @@ import { signOut } from "next-auth/react";
 
 const Ava: React.FC = () => {
   const handleLogout = async () => {
-    await signOut({ redirect: false, callbackUrl: "/" });
+    await signOut({ redirect: true, callbackUrl: "/" });
     const token = localStorage.getItem("access_token");
     console.log(token); // Nếu là null, điều này có nghĩa là token đã được xóa
   };

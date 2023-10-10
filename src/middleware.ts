@@ -10,34 +10,41 @@ export async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   })) as any;
 
-  let role;
+  let role, decode;
   if (token && typeof token === 'object' && token.access_token) {
-    role = decodeJwt(token.access_token);
+    decode = decodeJwt(token.access_token);
+    role = decode['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
   }
-
   // const role = decodeJwt(token.access_token); //code của Hạ, đang lỗi nên dùng chatGPT nó chỉ đoạn code trên
   // console.log(role['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
-  
+  console.log(token);
   switch (pathname) {
     case "/":
       //có token, chưa hết hạn login => so role (demo 2 role: admin + sales-staff)
-      if (token && !isExpiredTimeToken(token.loginDate, token.expires_in)) {
+      if (role && isExpiredTimeToken(token.loginDate, token.expires_in)) {
         if (role === "Admin") {
           return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/admin/accounts`);
-        } else if (role === "Staff") {
+        } else if (role === "Sale") {
           return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/sales/customers`);
+        } else if (role === "IT") {
+          return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/technical/map`);
         }
-        break;
         //ko có token hoặc hết hạn login
-      } else if (!token || isExpiredTimeToken(token.loginDate, token.expires_in)) { // 
-        return NextResponse.redirect(`${origin}`);
+      if (!token) {
+        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
       }
+      }
+      break;
     case "/sales/customers":
     case "/sales/tickets":
-      if (!token || isExpiredTimeToken(token.loginDate, token.expires_in) || token.userName !== "staff") {
+      if (!token || !isExpiredTimeToken(token.loginDate, token.expires_in) || role !== "Sale") {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
-      } else {
-        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}${pathname}`);
       }
+      break;
+    case "/admin/accounts":
+      if (!token || !isExpiredTimeToken(token.loginDate, token.expires_in) || role !== "Admin") {
+        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
+      }
+      break;
   }
 }
