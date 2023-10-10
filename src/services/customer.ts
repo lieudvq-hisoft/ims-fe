@@ -12,6 +12,7 @@ const getCustomerData = async (
       token: token,
       params: paramGet,
     });
+    console.log(response);
     return response.data;
   };
 

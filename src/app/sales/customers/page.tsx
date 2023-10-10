@@ -33,7 +33,6 @@ export default function page() {
       }
     });
   };
-  console.log("getData", getData);
 
   const onRefresh = () => {
     getData();

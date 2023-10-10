@@ -8,6 +8,7 @@ import store from "@/store";
 import { persistStore } from "redux-persist";
 import SliderComponent from "@/components/layout/Slider";
 import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
 
 const { Content } = Layout;
 
@@ -22,6 +23,7 @@ const Home: React.FC<Props> = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
   return (
+    <Provider store={store}>
     <PersistGate loading={<div>loading</div>} persistor={persistor}>
       <Layout>
         <HeaderComponent />
@@ -38,6 +40,7 @@ const Home: React.FC<Props> = (props) => {
         </Layout>
       </Layout>
     </PersistGate>
+    </Provider>
   );
 };
 

@@ -1,7 +1,7 @@
 // trang của technical
 
 import React from "react";
-import Home from "@/app/page";
+import Home from "@/app/home/page";
 import RequestListTable from "@/components/request/RequestListTable";
 import SearchRequestList from "@/components/request/SearchRequestList";
 

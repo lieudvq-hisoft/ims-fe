@@ -17,7 +17,6 @@ export async function middleware(req: NextRequest) {
   }
   // const role = decodeJwt(token.access_token); //code của Hạ, đang lỗi nên dùng chatGPT nó chỉ đoạn code trên
   // console.log(role['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
-  console.log(token);
   switch (pathname) {
     case "/":
       //có token, chưa hết hạn login => so role (demo 2 role: admin + sales-staff)
