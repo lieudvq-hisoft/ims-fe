@@ -1,7 +1,8 @@
-//export const url = "https://imsapi.hisoft.vn";
-export const url = "https://127.0.0.1:7234";
-export const urlServerSide = "https://127.0.0.1:7234";
-//export const urlServerSide = "https://imsapi.hisoft.vn";
+export const url = "https://imsapi.hisoft.vn";
+export const urlServerSide = "https://imsapi.hisoft.vn";
+
+// export const url = "https://127.0.0.1:7234";
+// export const urlServerSide = "https://127.0.0.1:7234";
 
 const apiLinks = {
   user: {

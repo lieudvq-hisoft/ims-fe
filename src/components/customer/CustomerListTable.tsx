@@ -3,18 +3,24 @@ import React, { useState } from "react";
 import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import EditCustomerModal from "./EditCustomerModal";
+import useSelector from "@/hooks/use-selector";
 
 interface DataType {
-  key: string;
-  name: string;
-  representative: string;
+  key: React.Key;
+  id: string;
+  companyName: string;
+  fullname: string;
   address: string;
-  phone: string;
+  phoneNumber: string;
   email: string;
+  taxNumber: string;
 }
 
 const CustomerListTable: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const { customerDataLoading, customerData } = useSelector(
+    (state) => state.customer
+  );
 
   const showEditCustomerModal = () => {
     setOpen(true);
@@ -28,14 +34,14 @@ const CustomerListTable: React.FC = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "Tên công ty",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "companyName",
+      key: "companyName",
       render: (text) => <div>{text}</div>,
     },
     {
       title: "Người đại diện",
-      dataIndex: "representative",
-      key: "representative",
+      dataIndex: "fullname",
+      key: "fullname",
     },
     {
       title: "Địa chỉ",
@@ -44,8 +50,8 @@ const CustomerListTable: React.FC = () => {
     },
     {
       title: "Điện thoại",
-      key: "phone",
-      dataIndex: "phone",
+      key: "phoneNumber",
+      dataIndex: "phoneNumber",
     },
     {
       title: "Email",
@@ -65,36 +71,27 @@ const CustomerListTable: React.FC = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: "1",
-      name: "Hisoft",
-      representative: "Trần Anh Tuấn",
-      address: "New York No. 1 Lake Park",
-      phone: "0913740946",
-      email: "tuantase151156@fpt.edu.vn",
-    },
-    {
-      key: "2",
-      name: "Hisoft",
-      representative: "Trần Cao Vỹ",
-      address: "London No. 1 Lake Park",
-      phone: "0913740946",
-      email: "tuantase151156@fpt.edu.vn",
-    },
-    {
-      key: "3",
-      name: "Hisoft",
-      representative: "Phạm Nhật Hạ",
-      address: "Sydney No. 1 Lake Park",
-      phone: "0913740946",
-      email: "tuantase151156@fpt.edu.vn",
-    },
-  ];
+  const data: DataType[] = [];
+  for (let i = 0; i < customerData?.data?.length; ++i) {
+    data.push({
+      key: customerData?.data[i].id,
+      id: customerData?.data[i].id,
+      companyName: customerData?.data[i].companyName,
+      fullname: customerData?.data[i].fullname,
+      address: customerData?.data[i].address,
+      phoneNumber: customerData?.data[i].phoneNumber,
+      email: customerData?.data[i].email,
+      taxNumber: customerData?.data[i].taxNumber,
+    });
+  }
 
   return (
     <>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        loading={customerDataLoading}
+        columns={columns}
+        dataSource={data}
+      />
       <EditCustomerModal
         open={open}
         onCreate={onCreate}
