@@ -10,8 +10,12 @@ const apiLinks = {
   },
   customer: {
     create: `${url}/api/Customer`,
+    get: `${url}/api/Customer`,
     update: `${url}/api/Customer`,
-    get: `${url}/api/Customer`
+    delete: `${url}/api/Customer`,
+  },
+  companyType: {
+    get: `${url}/api/api/CompanyType`,
   },
 };
 

@@ -1,21 +1,19 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Form, Input, Modal, Tabs } from "antd";
+import { Button, Form, Modal, Tabs } from "antd";
 import Search from "antd/es/input/Search";
 import CreateOneAccount from "./CreateOneAccount";
 import CreateMoreAccount from "./CreateMoreAccount";
+import { customerCreate } from "@/models/customer";
+import customerService from "@/services/customer";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const { TabPane } = Tabs;
 
-interface Values {
-  title: string;
-  description: string;
-  modifier: string;
-}
-
 interface CollectionCreateFormProps {
   open: boolean;
-  onCreate: (values: Values) => void;
+  onCreate: (values: customerCreate) => void; // Sửa lại chỗ này
   onCancel: () => void;
 }
 
@@ -41,6 +39,7 @@ const CreateModalForm: React.FC<CollectionCreateFormProps> = ({
           .validateFields()
           .then((values) => {
             form.resetFields();
+            console.log("valuessss", values);
             onCreate(values);
           })
           .catch((info) => {
@@ -50,7 +49,7 @@ const CreateModalForm: React.FC<CollectionCreateFormProps> = ({
     >
       <Tabs defaultActiveKey="1" centered onChange={onChange}>
         <TabPane key={"1"} tab="Một">
-          <CreateOneAccount />
+          <CreateOneAccount form={form} />
         </TabPane>
         <TabPane key={"2"} tab="Nhiều">
           <CreateMoreAccount />
@@ -61,12 +60,29 @@ const CreateModalForm: React.FC<CollectionCreateFormProps> = ({
 };
 
 const CreateAndSearchAccount: React.FC = () => {
+  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
-  const onCreate = (values: any) => {
-    console.log("Received values of form: ", values);
+  const onSubmitCreateCustomer = async (values: customerCreate) => {
+    await customerService
+      .createCustomer(session?.user.access_token!, values)
+      .then(() => {
+        onRefresh();
+        toast.success(`Create category successful`);
+      })
+      .catch((errors) => {
+        toast.error(errors.response.values ?? "Create Customer failed");
+      });
+  };
+  const onRefresh = () => {
+    // getData();
     setOpen(false);
   };
+
+  // const onCreate = (values: any) => {
+  //   console.log("Received values of form: ", values);
+  //   setOpen(false);
+  // };
 
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -80,7 +96,7 @@ const CreateAndSearchAccount: React.FC = () => {
       </Button>
       <CreateModalForm
         open={open}
-        onCreate={onCreate}
+        onCreate={onSubmitCreateCustomer}
         onCancel={() => {
           setOpen(false);
         }}

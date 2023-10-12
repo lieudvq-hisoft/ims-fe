@@ -1,19 +1,16 @@
 "use client";
 
 import React from "react";
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-} from "antd";
+import { Form, Input, Select } from "antd";
 import { Typography } from "antd";
+import { FormInstance } from "antd/lib";
 
 const { Title, Text } = Typography;
+const { Option } = Select;
+
+interface Props {
+  form: FormInstance<any>;
+}
 
 const formItemLayout = {
   labelCol: {
@@ -26,21 +23,8 @@ const formItemLayout = {
   },
 };
 
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
-
-const CreateOneAccount: React.FC = () => {
-  const [form] = Form.useForm();
+const CreateOneAccount: React.FC<Props> = ({ form }) => {
+  // const [form] = Form.useForm();
 
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
@@ -65,7 +49,7 @@ const CreateOneAccount: React.FC = () => {
       </div>
 
       <Form.Item
-        name="name"
+        name="companyName"
         label="Tên công ty"
         rules={[
           {
@@ -79,7 +63,28 @@ const CreateOneAccount: React.FC = () => {
       </Form.Item>
 
       <Form.Item
-        name="representative"
+        label="Loại công ty"
+        name="companyTypeId"
+        rules={[
+          {
+            required: true,
+            message: "Vui lòng nhập Loại công ty!",
+          },
+        ]}
+      >
+        <Select placeholder="Chọn loại công ty">
+          <Option value="1">Doanh nghiệp tư nhân</Option>
+          <Option value="2">Công ty trách nhiệm hữu hạn một thành viên</Option>
+          <Option value="3">
+            Công ty trách nhiệm hữu hạn từ hai thành viên trở lên
+          </Option>
+          <Option value="4">Công ty cổ phần</Option>
+          <Option value="5">Công ty hợp danh</Option>
+        </Select>
+      </Form.Item>
+
+      <Form.Item
+        name="fullname"
         label="Người đại diện"
         rules={[
           {
@@ -93,7 +98,7 @@ const CreateOneAccount: React.FC = () => {
       </Form.Item>
 
       <Form.Item
-        name="tax"
+        name="taxNumber"
         label="Mã số thuế"
         rules={[
           {
@@ -111,7 +116,8 @@ const CreateOneAccount: React.FC = () => {
         label="Địa chỉ"
         rules={[
           {
-            message: "Vui lòng nhập địa chỉ!",
+            required: true,
+            message: "Vui lòng nhập Địa chỉ!",
             whitespace: true,
           },
         ]}
@@ -121,7 +127,7 @@ const CreateOneAccount: React.FC = () => {
 
       <Form.Item
         name="email"
-        label="E-mail"
+        label="Email"
         rules={[
           {
             type: "email",
@@ -137,13 +143,13 @@ const CreateOneAccount: React.FC = () => {
       </Form.Item>
 
       <Form.Item
-        name="phone"
+        name="phoneNumber"
         label="Số điện thoại"
         rules={[
-          {
-            type: "number",
-            message: "Vui lòng nhập chữ số từ 1 - 9",
-          },
+          // {
+          //   type: "string",
+          //   message: "Vui lòng nhập chữ số từ 1 - 9",
+          // },
           {
             required: true,
             message: "Vui lòng nhập Số điện thoại!",
@@ -152,12 +158,6 @@ const CreateOneAccount: React.FC = () => {
       >
         <Input />
       </Form.Item>
-
-      {/* <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
-          Tạo Tài Khoản
-        </Button>
-      </Form.Item> */}
     </Form>
   );
 };

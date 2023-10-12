@@ -11,5 +11,15 @@ export interface Customer extends Base {
 }
 
 export interface CustomerData extends PagingModel {
-    data: Customer[];
-  } 
+  data: Customer[];
+}
+
+export interface customerCreate {
+  companyName: string;
+  taxNumber: string;
+  fullname: string;
+  companyTypeId: string;
+  address: string;
+  email: string;
+  phoneNumber: string;
+}

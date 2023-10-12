@@ -16,9 +16,12 @@ const initialState: State = {
 const TYPE_PREFIX = "customer";
 
 const getCustomerData = createAsyncThunk(
-  `${TYPE_PREFIX}/getBlogData`,
+  `${TYPE_PREFIX}/getCustomerData`,
   async (arg: { token: string; paramGet: ParamGet }) => {
-    const result = await customerService.getCustomerData(arg.token, arg.paramGet);
+    const result = await customerService.getCustomerData(
+      arg.token,
+      arg.paramGet
+    );
     return result;
   }
 );
