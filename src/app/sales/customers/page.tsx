@@ -8,7 +8,7 @@ import CreateAndSearchAccount from "@/components/customer/CreateAndSearchAccount
 import { getCustomerData } from "@/slices/customer";
 import { useSession } from "next-auth/react";
 import { ParamGet } from "@/models/base";
-import { CustomerData, customerCreate } from "@/models/customer";
+import { CustomerData } from "@/models/customer";
 import useDispatch from "@/hooks/use-dispatch";
 import Home from "@/app/home/page";
 

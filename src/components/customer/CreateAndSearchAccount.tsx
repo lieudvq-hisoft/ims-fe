@@ -4,7 +4,7 @@ import { Button, Form, Modal, Tabs } from "antd";
 import Search from "antd/es/input/Search";
 import CreateOneAccount from "./CreateOneAccount";
 import CreateMoreAccount from "./CreateMoreAccount";
-import { customerCreate } from "@/models/customer";
+import { CustomerCreate } from "@/models/customer";
 import customerService from "@/services/customer";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
@@ -13,7 +13,7 @@ const { TabPane } = Tabs;
 
 interface CollectionCreateFormProps {
   open: boolean;
-  onCreate: (values: customerCreate) => void; // Sửa lại chỗ này
+  onCreate: (values: CustomerCreate) => void; // Sửa lại chỗ này
   onCancel: () => void;
 }
 
@@ -63,7 +63,7 @@ const CreateAndSearchAccount: React.FC = () => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
-  const onSubmitCreateCustomer = async (values: customerCreate) => {
+  const onSubmitCreateCustomer = async (values: CustomerCreate) => {
     await customerService
       .createCustomer(session?.user.access_token!, values)
       .then(() => {

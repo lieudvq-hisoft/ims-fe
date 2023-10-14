@@ -22,7 +22,7 @@ const request = (arg: FullOptions): Promise<AxiosResponse> => {
   //const cookie = getCookie(CookiesName.NAME);
   const {
     method,
-    contentType = "application/json",
+    contentType,
     url,
     data,
     params,
@@ -42,7 +42,7 @@ const request = (arg: FullOptions): Promise<AxiosResponse> => {
   return axios.request({
     method,
     headers: {
-      "content-type": contentType,
+      "content-type": contentType || "application/json",
       Authorization: authorization,
     },
     url: typeof url === "string" ? url : url(apiLinks),
@@ -63,6 +63,9 @@ const httpClient = {
   },
   put: (arg: Options): Promise<AxiosResponse> => {
     return request({ ...arg, method: "PUT", token: arg.token });
+  },
+  patch: (arg: Options): Promise<AxiosResponse> => {
+    return request({ ...arg, method: "PATCH", token: arg.token });
   },
   delete: (arg: Options): Promise<AxiosResponse> => {
     return request({ ...arg, method: "DELETE", token: arg.token });

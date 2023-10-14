@@ -26,9 +26,7 @@ const formItemLayout = {
 const CreateOneAccount: React.FC<Props> = ({ form }) => {
   // const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
-  };
+  const onFinish = (values: any) => {};
 
   return (
     <Form
@@ -73,13 +71,13 @@ const CreateOneAccount: React.FC<Props> = ({ form }) => {
         ]}
       >
         <Select placeholder="Chọn loại công ty">
-          <Option value="1">Doanh nghiệp tư nhân</Option>
-          <Option value="2">Công ty trách nhiệm hữu hạn một thành viên</Option>
-          <Option value="3">
+          <Option value={1}>Doanh nghiệp tư nhân</Option>
+          <Option value={2}>Công ty trách nhiệm hữu hạn một thành viên</Option>
+          <Option value={3}>
             Công ty trách nhiệm hữu hạn từ hai thành viên trở lên
           </Option>
-          <Option value="4">Công ty cổ phần</Option>
-          <Option value="5">Công ty hợp danh</Option>
+          <Option value={4}>Công ty cổ phần</Option>
+          <Option value={5}>Công ty hợp danh</Option>
         </Select>
       </Form.Item>
 

@@ -1,28 +1,33 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Modal } from "antd";
 import { Typography } from "antd";
-
+import { DataType } from "./CustomerListTable";
+import { CustomerEdit } from "@/models/customer";
 const { Title } = Typography;
 
-interface Values {
-  title: string;
-  description: string;
-  modifier: string;
-}
-
-interface CollectionCreateFormProps {
+export interface CollectionEditFormProps {
   open: boolean;
-  onCreate: (values: Values) => void;
+  onCreate: (values: CustomerEdit) => void;
   onCancel: () => void;
+  customer: DataType | null;
 }
 
-const EditCustomerModal: React.FC<CollectionCreateFormProps> = ({
+const EditCustomerModal: React.FC<CollectionEditFormProps> = ({
   open,
   onCreate,
   onCancel,
+  customer,
 }) => {
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (customer) {
+      form.setFieldsValue(customer);
+    } else {
+      form.resetFields();
+    }
+  }, [customer, form]);
 
   return (
     <Modal
@@ -41,6 +46,7 @@ const EditCustomerModal: React.FC<CollectionCreateFormProps> = ({
           .validateFields()
           .then((values) => {
             form.resetFields();
+            console.log("values", values);
             onCreate(values);
           })
           .catch((info) => {
@@ -50,27 +56,28 @@ const EditCustomerModal: React.FC<CollectionCreateFormProps> = ({
     >
       <div style={{ paddingTop: "20px", paddingBottom: "10px" }}>
         <Form
+          form={form}
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 12 }}
           layout="horizontal"
           style={{ width: 500 }}
         >
-          <Form.Item label="Tên công ty">
+          <Form.Item label="Tên công ty" name="companyName">
             <Input />
           </Form.Item>
-          <Form.Item label="Người đại diện">
+          <Form.Item label="Người đại diện" name="fullname">
             <Input />
           </Form.Item>
-          <Form.Item label="Mã số thuê">
+          <Form.Item label="Mã số thuế" name="taxNumber">
             <Input />
           </Form.Item>
-          <Form.Item label="Địa chỉ">
+          <Form.Item label="Địa chỉ" name="address">
             <Input />
           </Form.Item>
-          <Form.Item label="E-mail">
+          <Form.Item label="Email" name="email">
             <Input />
           </Form.Item>
-          <Form.Item label="Số điện thoại">
+          <Form.Item label="Số điện thoại" name="phoneNumber">
             <Input />
           </Form.Item>
         </Form>

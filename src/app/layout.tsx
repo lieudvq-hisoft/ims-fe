@@ -6,6 +6,8 @@ import "../app/globals.css";
 import { Provider } from "react-redux";
 import store from "@/store";
 import { SessionProvider } from "next-auth/react";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +22,7 @@ const RootLayout = ({ children }: React.PropsWithChildren) => (
       <SessionProvider>
         <Provider store={store}>
           <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          <ToastContainer />
         </Provider>
       </SessionProvider>
     </body>

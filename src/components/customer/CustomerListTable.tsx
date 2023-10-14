@@ -1,11 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import { Space, Table, Tag } from "antd";
+import { Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import EditCustomerModal from "./EditCustomerModal";
 import useSelector from "@/hooks/use-selector";
+import { CustomerEdit } from "@/models/customer";
+import { toast } from "react-toastify";
+import customerService from "@/services/customer";
+import { useSession } from "next-auth/react";
 
-interface DataType {
+export interface DataType {
   key: React.Key;
   id: string;
   companyName: string;
@@ -17,12 +21,16 @@ interface DataType {
 }
 
 const CustomerListTable: React.FC = () => {
+  const [customer, setCustomer] = useState<DataType | null>(null);
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
+
   const { customerDataLoading, customerData } = useSelector(
     (state) => state.customer
   );
 
-  const showEditCustomerModal = () => {
+  const showEditCustomerModal = (record: DataType) => {
+    setCustomer(record);
     setOpen(true);
   };
 
@@ -31,6 +39,24 @@ const CustomerListTable: React.FC = () => {
     setOpen(false);
   };
 
+  const onUpdate = async (values: CustomerEdit) => {
+    if (customer?.id) {
+      // sử dụng customer?.id để lấy id của đối tượng được chọn
+      const updatedValues = { ...values, id: customer.id }; // tạo một đối tượng mới với id và các giá trị khác từ form
+      customerService
+        .updateCustomer(session?.user.access_token!, updatedValues)
+        .then(() => {
+          toast.success(`Update category successful`);
+        })
+        .catch((errors) => {
+          toast.error(errors.response.data ?? "Update category failed");
+        });
+    }
+  };
+  const onRefresh = () => {
+    // getData();
+    setOpen(false);
+  };
   const columns: ColumnsType<DataType> = [
     {
       title: "Tên công ty",
@@ -61,10 +87,10 @@ const CustomerListTable: React.FC = () => {
     {
       title: "Tùy Chọn",
       key: "action",
-      render: () => (
+      render: (record) => (
         <Space size="middle">
           <a>Chi tiết </a>
-          <a onClick={() => showEditCustomerModal()}>Chỉnh sửa </a>
+          <a onClick={() => showEditCustomerModal(record)}>Chỉnh sửa </a>
           <a>Xóa</a>
         </Space>
       ),
@@ -93,8 +119,9 @@ const CustomerListTable: React.FC = () => {
         dataSource={data}
       />
       <EditCustomerModal
+        customer={customer}
         open={open}
-        onCreate={onCreate}
+        onCreate={onUpdate}
         onCancel={() => {
           setOpen(false);
         }}
