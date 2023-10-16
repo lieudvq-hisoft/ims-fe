@@ -47,10 +47,10 @@ export default function page() {
               <h1 style={{ paddingBottom: "10px", textAlign: "center" }}>
                 DANH SÁCH KHÁCH HÀNG
               </h1>
-              <CreateAndSearchAccount />
+              <CreateAndSearchAccount onRefresh={getData} />
             </div>
             <div style={{ paddingTop: "10px" }}>
-              <CustomerListTable />
+              <CustomerListTable onRefresh={getData} />
             </div>
           </>
         </>

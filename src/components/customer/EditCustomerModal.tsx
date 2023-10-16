@@ -6,7 +6,7 @@ import { DataType } from "./CustomerListTable";
 import { CustomerEdit } from "@/models/customer";
 const { Title } = Typography;
 
-export interface CollectionEditFormProps {
+interface CollectionEditFormProps {
   open: boolean;
   onCreate: (values: CustomerEdit) => void;
   onCancel: () => void;

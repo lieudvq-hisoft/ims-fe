@@ -1,13 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { Space, Table } from "antd";
+import { Space, Table, Modal, Alert } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import EditCustomerModal from "./EditCustomerModal";
 import useSelector from "@/hooks/use-selector";
-import { CustomerEdit } from "@/models/customer";
+import { Customer, CustomerEdit } from "@/models/customer";
 import { toast } from "react-toastify";
 import customerService from "@/services/customer";
 import { useSession } from "next-auth/react";
+const { confirm } = Modal;
 
 export interface DataType {
   key: React.Key;
@@ -20,10 +21,15 @@ export interface DataType {
   taxNumber: string;
 }
 
-const CustomerListTable: React.FC = () => {
+interface CustomerListTableProps {
+  onRefresh: () => void;
+}
+
+const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
   const [customer, setCustomer] = useState<DataType | null>(null);
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
+  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
 
   const { customerDataLoading, customerData } = useSelector(
     (state) => state.customer
@@ -34,9 +40,36 @@ const CustomerListTable: React.FC = () => {
     setOpen(true);
   };
 
-  const onCreate = (values: any) => {
-    console.log("Received values of form: ", values);
-    setOpen(false);
+  // const onCreate = (values: any) => {
+  //   console.log("Received values of form: ", values);
+  //   setOpen(false);
+  // };
+
+  const onDelete = (customer: Customer) => {
+    confirm({
+      title: "Delete",
+      content: (
+        <Alert
+          message="Do you want to delete this Customer?"
+          description={`${customer.companyName}`}
+          type="warning"
+        />
+      ),
+      async onOk() {
+        setLoadingSubmit(true);
+        await customerService
+          .deleteCustomer(session?.user.access_token!, customer.id)
+          .then(() => {
+            onRefresh();
+            toast.success(`Delete blog successful`);
+          })
+          .catch((errors) => {
+            toast.error(errors.response.data ?? "Delete blog failed");
+            setLoadingSubmit(false);
+          });
+      },
+      onCancel() {},
+    });
   };
 
   const onUpdate = async (values: CustomerEdit) => {
@@ -46,6 +79,9 @@ const CustomerListTable: React.FC = () => {
       customerService
         .updateCustomer(session?.user.access_token!, updatedValues)
         .then(() => {
+          props.onRefresh();
+          setOpen(false);
+
           toast.success(`Update category successful`);
         })
         .catch((errors) => {
@@ -54,9 +90,9 @@ const CustomerListTable: React.FC = () => {
     }
   };
   const onRefresh = () => {
-    // getData();
     setOpen(false);
   };
+
   const columns: ColumnsType<DataType> = [
     {
       title: "Tên công ty",
@@ -91,7 +127,7 @@ const CustomerListTable: React.FC = () => {
         <Space size="middle">
           <a>Chi tiết </a>
           <a onClick={() => showEditCustomerModal(record)}>Chỉnh sửa </a>
-          <a>Xóa</a>
+          <a onClick={() => onDelete(record)}>Xóa</a>
         </Space>
       ),
     },

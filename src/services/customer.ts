@@ -21,7 +21,6 @@ const createCustomer = async (
 ): Promise<Customer> => {
   const response = await httpClient.post({
     url: apiLinks.customer.create,
-    contentType: "multipart/form-data",
     token: token,
     data: data,
   });
@@ -40,10 +39,19 @@ const getCustomerData = async (
   return response.data;
 };
 
+const deleteCustomer = async (token: string, id: string): Promise<Customer> => {
+  const response = await httpClient.delete({
+    url: apiLinks.customer.delete + `/${id}`,
+    token: token,
+  });
+  return response.data;
+};
+
 const customerService = {
   getCustomerData,
   createCustomer,
   updateCustomer,
+  deleteCustomer,
 };
 
 export default customerService;

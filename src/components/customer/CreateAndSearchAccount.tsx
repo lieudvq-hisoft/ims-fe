@@ -59,7 +59,9 @@ const CreateModalForm: React.FC<CollectionCreateFormProps> = ({
   );
 };
 
-const CreateAndSearchAccount: React.FC = () => {
+const CreateAndSearchAccount: React.FC<{ onRefresh: () => void }> = ({
+  onRefresh,
+}) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
@@ -68,15 +70,12 @@ const CreateAndSearchAccount: React.FC = () => {
       .createCustomer(session?.user.access_token!, values)
       .then(() => {
         onRefresh();
+        setOpen(false);
         toast.success(`Create category successful`);
       })
       .catch((errors) => {
         toast.error(errors.response.values ?? "Create Customer failed");
       });
-  };
-  const onRefresh = () => {
-    // getData();
-    setOpen(false);
   };
 
   // const onCreate = (values: any) => {

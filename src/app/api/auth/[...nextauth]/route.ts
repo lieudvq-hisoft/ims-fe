@@ -23,7 +23,7 @@ const handler = NextAuth({
             id: result.userID,
             name: result.userName,
             access_token: result.access_token,
-            expires_in: result.expires_in,
+            expires_in: 6000,
             loginDate: moment().format(),
             userID: result.userID,
             userName: result.userName,

@@ -4,6 +4,7 @@ export interface Customer extends Base {
   id: string;
   companyName: string;
   fullname: string;
+  companyType: string;
   address: string;
   phoneNumber: string;
   email: string;
