@@ -40,9 +40,9 @@ export async function middleware(req: NextRequest) {
           return NextResponse.redirect(
             `${process.env.NEXTAUTH_URL}/sales/customers`
           );
-        } else if (role === "IT") {
+        } else if (role === "Tech") {
           return NextResponse.redirect(
-            `${process.env.NEXTAUTH_URL}/technical/map`
+            `${process.env.NEXTAUTH_URL}/technical/maps`
           );
         }
         //ko có token hoặc hết hạn login

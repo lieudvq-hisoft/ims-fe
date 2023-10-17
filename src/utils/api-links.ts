@@ -15,7 +15,10 @@ const apiLinks = {
     delete: `${url}/api/Customer`,
   },
   companyType: {
-    get: `${url}/api/api/CompanyType`,
+    get: `${url}/api/CompanyType`,
+  },
+  location: { //rack
+    get: `${url}/api/Location/Area`,
   },
 };
 

@@ -48,8 +48,6 @@ const handler = NextAuth({
               }
             }
           }
-          
-          console.log(user.expires_in);
           return user;
         } else {
           return null;
