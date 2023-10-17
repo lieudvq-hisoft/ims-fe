@@ -2,6 +2,8 @@ import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import userService from "@/services/user";
 import moment from "moment";
+import { decodeJwt } from "@/utils/decode-jwt";
+import { JwtPayload } from "jsonwebtoken";
 
 const handler = NextAuth({
   providers: [
@@ -23,12 +25,31 @@ const handler = NextAuth({
             id: result.userID,
             name: result.userName,
             access_token: result.access_token,
-            expires_in: 6000,
+            expires_in: result.expires_in, //60s as swagger show
             loginDate: moment().format(),
             userID: result.userID,
             userName: result.userName,
             token_type: result.token_type,
           } as User;
+          let exp: number | undefined;
+          let decode: JwtPayload | string | undefined;
+
+          if (result && typeof result === "object" && result.access_token) {
+            const decodedToken = decodeJwt(result.access_token);
+            if (decodedToken) {
+              decode = decodedToken;
+              if (typeof decode === "object") {
+                exp = decode[
+                  "exp"
+                ] as number | undefined;
+                if (exp) {
+                  user.expires_in = exp;
+                }
+              }
+            }
+          }
+          
+          console.log(user.expires_in);
           return user;
         } else {
           return null;
