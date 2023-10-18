@@ -1,41 +1,37 @@
-"use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import locationService from '@/services/location';
 import { useSession } from "next-auth/react";
-import useSelector from "@/hooks/use-selector";
-import locationService from "@/services/location";
-import { Space, Table, Modal, Alert } from "antd";
 
 interface Rack {
-    id: number;
-    column: number;
-    row: number;
-    size: number;
-  }
-  
-interface RackData {
-    key: React.Key;
-    id: number;
-    name: string;
-    rowCount: number;
-    columnCount: number;
-    racks: Rack[];
-  }
-
-interface RackMapProps {
-    onRefresh: () => void;
+  id: number;
+  column: number;
+  row: number;
+  size: number;
 }
 
-const RackMap: React.FC<RackMapProps> = (props) => {
-    const { data: session } = useSession();
-    const [isCollapsed, setIsCollapsed] = useState(true);
-    const [rackData, setRackData] = useState<RackData | null>(null);
+interface RackData {
+  key: React.Key;
+  id: number;
+  name: string;
+  rows: Array<Rack[]>;
+}
+
+interface LocationPageProps {
+  onRefresh: () => void;
+}
+
+const LocationPage: React.FC<LocationPageProps> = ({ onRefresh }) => {
+  const { data: session } = useSession();
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [rackData, setRackData] = useState<RackData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = session?.user.access_token!;
-        const data = await locationService.getRackData(token);
-        setRackData(() => data);
+        console.log(session?.user.access_token);
+        const data = await locationService.getRackData(session?.user.access_token!);
+        // setRackData(() => data);
+        
       } catch (error) {
         console.error('Error fetching rack data:', error);
       }
@@ -43,35 +39,16 @@ const RackMap: React.FC<RackMapProps> = (props) => {
 
     fetchData();
   }, []);
-  
+
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
 
   return (
     <div>
-      <button onClick={toggleCollapse}>
-        {isCollapsed ? 'Expand' : 'Collapse'} Big Area
-      </button>
-      {!isCollapsed && rackData && (
-        <div>
-          {rackData.racks.map((rack, index) => (
-            <div key={index}>
-              <div>
-                <strong>Rack ID: {rack.id}</strong>
-              </div>
-              <div>
-                <strong>Row: {rack.row}</strong>, <strong>Column: {rack.column}</strong>
-              </div>
-              <div>
-                <strong>Size: {rack.size}</strong>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      Test Map
     </div>
   );
-};
+}
 
-export default RackMap;
+export default LocationPage;

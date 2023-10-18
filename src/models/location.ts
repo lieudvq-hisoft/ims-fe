@@ -1,5 +1,3 @@
-import { Base, PagingModel } from "./base";
-
 export interface Rack {
     id: number;
     name: string;
@@ -12,8 +10,4 @@ export interface Rack {
         size: number;
         areaId: number;
     }>;
-}
-
-export interface RackData extends PagingModel {
-    data: Rack[];
 }

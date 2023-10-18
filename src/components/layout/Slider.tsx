@@ -34,7 +34,7 @@ const items: MenuItem[] = [
     getItem("Manager", "manager"),
   ]),
   getItem("Sơ Đồ Server", "technical/maps", <TableOutlined />, [
-    getItem("Xem toàn bộ sơ đồ", "technical/maps"),
+    getItem("Xem toàn bộ sơ đồ", "technical/maps/"),
     getItem("Khu A", "khuA", <TableOutlined />, [
       getItem("A1", "techical/maps/"),
       getItem("A2", "A"),

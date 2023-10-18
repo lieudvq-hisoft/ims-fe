@@ -28,7 +28,7 @@ const request = (arg: FullOptions): Promise<AxiosResponse> => {
     params,
     signal,
     responseType = "json",
-    authorization = `bearer ${arg.token}`,
+    authorization = `Bearer ${arg.token}`,
     token,
     routing,
   } = arg;

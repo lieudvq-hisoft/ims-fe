@@ -1,15 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { RackData } from "@/models/location";
-import { ParamGet } from "@/models/base";
+import { Rack } from "@/models/location";
 import locationService from "@/services/location";
 
 interface State {
-    rackData: RackData;
+    rackData: Rack;
     rackDataLoading: boolean;
 }
 
 const initialState: State = {
-    rackData: {} as RackData,
+    rackData: {} as Rack,
     rackDataLoading: false,
 };
 
@@ -19,7 +18,7 @@ const getRackData = createAsyncThunk(
     `${TYPE_PREFIX}/getRackData`,
     async (arg: { token: string }) => {
         const result = await locationService.getRackData(
-            arg.token
+            arg.token,
         );
         return result;
     }

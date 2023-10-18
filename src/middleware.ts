@@ -14,6 +14,7 @@ export async function middleware(req: NextRequest) {
 
   let role: string | undefined;
   let decode: JwtPayload | string | undefined;
+  let exp: number | undefined;
 
   if (token && typeof token === "object" && token.access_token) {
     const decodedToken = decodeJwt(token.access_token);
@@ -23,6 +24,7 @@ export async function middleware(req: NextRequest) {
         role = decode[
           "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         ] as string | undefined;
+        exp = decode["exp"] as number | undefined;
       }
     }
   }
@@ -31,7 +33,7 @@ export async function middleware(req: NextRequest) {
   switch (pathname) {
     case "/":
       //có token, chưa hết hạn login => so role (demo 2 role: admin + sales-staff)
-      if (role && isExpiredTimeToken(token.loginDate, token.expires_in)) {
+      if (role && isExpiredTimeToken(token.loginDate, exp!)) {
         if (role === "Admin") {
           return NextResponse.redirect(
             `${process.env.NEXTAUTH_URL}/admin/accounts`
@@ -48,13 +50,13 @@ export async function middleware(req: NextRequest) {
         //ko có token hoặc hết hạn login
         if (!token) {
           return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
-        } else if (!isExpiredTimeToken(token.loginDate, token.expires_in)) {
+        } else if (!isExpiredTimeToken(token.loginDate, exp!)) {
           return signOut({ redirect: true, callbackUrl: "/" });
         }
       }
       break;
     case "/home":
-      if (!token || !isExpiredTimeToken(token.loginDate, token.expires_in)) {
+      if (!token || !isExpiredTimeToken(token.loginDate, exp!)) {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
       }
       break;
@@ -62,7 +64,7 @@ export async function middleware(req: NextRequest) {
     case "/sales/tickets":
       if (
         !token ||
-        !isExpiredTimeToken(token.loginDate, token.expires_in) ||
+        !isExpiredTimeToken(token.loginDate, exp!) ||
         role !== "Sale"
       ) {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
@@ -71,8 +73,18 @@ export async function middleware(req: NextRequest) {
     case "/admin/accounts":
       if (
         !token ||
-        !isExpiredTimeToken(token.loginDate, token.expires_in) ||
+        !isExpiredTimeToken(token.loginDate, exp!) ||
         role !== "Admin"
+      ) {
+        return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
+      }
+      break;
+    case "/technical/maps":
+    case "/technical/requests":
+      if (
+        !token ||
+        !isExpiredTimeToken(token.loginDate, exp!) ||
+        role !== "Tech"
       ) {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
       }
