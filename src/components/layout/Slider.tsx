@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/navigation";
 import useDispatch from "@/hooks/use-dispatch";
 import useSelector from "@/hooks/use-selector";
+import { useSession } from "next-auth/react";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -56,10 +57,13 @@ const { Sider } = Layout;
 const SliderComponent: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { data: session } = useSession();
 
   const { collapsed, sliderMenuItemSelectedKey } = useSelector(
     (state) => state.global
   );
+
+  console.log(session);
 
   return (
     <Sider

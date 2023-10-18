@@ -30,9 +30,11 @@ const handler = NextAuth({
             userID: result.userID,
             userName: result.userName,
             token_type: result.token_type,
+            role: "",
           } as User;
           let exp: number | undefined;
           let decode: JwtPayload | string | undefined;
+          let role: string | undefined;
 
           if (result && typeof result === "object" && result.access_token) {
             const decodedToken = decodeJwt(result.access_token);
@@ -45,11 +47,16 @@ const handler = NextAuth({
                 if (exp) {
                   user.expires_in = exp;
                 }
+
+                role = decode[
+                  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+                ] as string | undefined;
+                if (role) {
+                  user.role = role;
+                }
               }
             }
           }
-          
-          console.log(user.expires_in);
           return user;
         } else {
           return null;
@@ -66,6 +73,7 @@ const handler = NextAuth({
         // token.email = user.email;
         token.userId = user.userID;
         token.userName = user.userName;
+        token.role = user.role;
       }
       if (trigger === "update" && session) {
         return { ...token, ...session?.user };
@@ -81,6 +89,7 @@ const handler = NextAuth({
         // session.user.email = token.email;
         session.user.userName = token.userName;
         session.user.userID = token.userID;
+        session.user.role = token.role;
       }
       return session;
     },
@@ -91,4 +100,4 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
 });
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST}

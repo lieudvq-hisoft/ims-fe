@@ -1,9 +1,9 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { isExpiredTimeToken } from "@/utils/token-exp-checker";
+import { signOut } from "next-auth/react";
 import { decodeJwt } from "@/utils/decode-jwt";
 import { JwtPayload } from "jsonwebtoken";
-import { signOut } from "next-auth/react";
 
 export async function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
@@ -32,6 +32,7 @@ export async function middleware(req: NextRequest) {
     case "/":
       //có token, chưa hết hạn login => so role (demo 2 role: admin + sales-staff)
       if (role && isExpiredTimeToken(token.loginDate, token.expires_in)) {
+        console.log("yay");
         if (role === "Admin") {
           return NextResponse.redirect(
             `${process.env.NEXTAUTH_URL}/admin/accounts`
@@ -40,13 +41,14 @@ export async function middleware(req: NextRequest) {
           return NextResponse.redirect(
             `${process.env.NEXTAUTH_URL}/sales/customers`
           );
-        } else if (role === "IT") {
+        } else if (role === "Tech") {
           return NextResponse.redirect(
             `${process.env.NEXTAUTH_URL}/technical/map`
           );
         }
         //ko có token hoặc hết hạn login
         if (!token) {
+          console.log("Huhu");
           return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
         } else if (!isExpiredTimeToken(token.loginDate, token.expires_in)) {
           return signOut({ redirect: true, callbackUrl: "/" });
