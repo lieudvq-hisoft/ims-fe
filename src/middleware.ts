@@ -1,9 +1,9 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { isExpiredTimeToken } from "@/utils/token-exp-checker";
+import { signOut } from "next-auth/react";
 import { decodeJwt } from "@/utils/decode-jwt";
 import { JwtPayload } from "jsonwebtoken";
-import { signOut } from "next-auth/react";
 
 export async function middleware(req: NextRequest) {
   const { pathname, origin } = req.nextUrl;
@@ -42,6 +42,7 @@ export async function middleware(req: NextRequest) {
           return NextResponse.redirect(
             `${process.env.NEXTAUTH_URL}/sales/customers`
           );
+        } else if (role === "Tech") {
         } else if (role === "Tech") {
           return NextResponse.redirect(
             `${process.env.NEXTAUTH_URL}/technical/maps`
