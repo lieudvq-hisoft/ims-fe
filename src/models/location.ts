@@ -1,4 +1,5 @@
 export interface Rack {
+    forEach(arg0: (location: any) => void): unknown;
     id: number;
     name: string;
     rowCount: number;

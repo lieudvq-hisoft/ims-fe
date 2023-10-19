@@ -1,0 +1,40 @@
+.collapsible-map {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-icon-map {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #d0e3ff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.header-map {
+    font-size: medium;
+    font-weight: bold;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.icon-map {
+    margin-right: 10px;
+    display: inline-block;
+    float: right;
+}
+
+.buttons-map {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    border-spacing: 10px !important;
+}
+
+.buttons-map Button {
+    flex: 1;
+    margin: 0 5px !important;
+    width: 100%;
+}

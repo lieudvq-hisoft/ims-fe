@@ -9,7 +9,6 @@ const getRackData = async (
     url: apiLinks.location.get,
     token: token,
   });
-  console.log(response.data);
   return response.data;
 };
 const locationService = {

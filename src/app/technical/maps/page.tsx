@@ -7,8 +7,6 @@ import LocationPage from "@/components/api/rack-map/Map";
 import { useEffect, useState } from "react";
 import { getRackData } from "@/slices/location";
 import { useSession } from "next-auth/react";
-import { ParamGet } from "@/models/base";
-import { Rack } from "@/models/location";
 import useDispatch from "@/hooks/use-dispatch";
 
 export default function page() {
