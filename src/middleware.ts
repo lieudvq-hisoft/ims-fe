@@ -43,7 +43,6 @@ export async function middleware(req: NextRequest) {
             `${process.env.NEXTAUTH_URL}/sales/customers`
           );
         } else if (role === "Tech") {
-        } else if (role === "Tech") {
           return NextResponse.redirect(
             `${process.env.NEXTAUTH_URL}/technical/maps`
           );
