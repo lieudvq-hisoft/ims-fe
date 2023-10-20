@@ -36,7 +36,7 @@ const items: MenuItem[] = [
   ]),
   getItem("Sơ Đồ Server", "maps-tech", <TableOutlined />, [
     getItem("Khu A", "khuA", <TableOutlined />, [
-      getItem("A1", "techical/maps"),
+      getItem("A1", "technical/maps"),
       getItem("A2", "A"),
     ]),
     getItem("Khu B", "khuB", <TableOutlined />, [
@@ -45,8 +45,9 @@ const items: MenuItem[] = [
     ]),
   ]),
   getItem("Yêu cầu Khách hàng", "requests-tech", <SnippetsOutlined />, [
-    getItem("Đã duyệt", "technical/requests"),
-    getItem("Ủy quyền", ""),
+    getItem("Chờ xét duyệt", "technical/requests"),
+    getItem("Thành công", ""),
+    getItem("Thất bại", ""),
   ]),
   getItem("Customers", "sales/customers", <UserOutlined />),
   getItem("Tickets", "sales/tickets", <UserOutlined />),
@@ -69,18 +70,20 @@ const SliderComponent: React.FC = () => {
     switch (role) {
       case "Admin":
         return items.filter((item) =>
-          String((item ?? { key: "" }).key).includes("sub1")
+          ["sub1", "myaccount"].some((str) =>
+            String((item ?? { key: "" }).key).includes(str)
+          )
         );
       case "Tech":
         return items.filter((item) =>
-          ["requests-tech", "maps-tech"].some((str) =>
+          ["requests-tech", "maps-tech", "myaccount"].some((str) =>
             String((item ?? { key: "" }).key).includes(str)
           )
         );
 
       case "Sale":
         return items.filter((item) =>
-          ["sales/customers", "sales/tickets"].some((str) =>
+          ["sales/customers", "sales/tickets", "myaccount"].some((str) =>
             String((item ?? { key: "" }).key).includes(str)
           )
         );

@@ -17,8 +17,12 @@ const apiLinks = {
   companyType: {
     get: `${url}/api/CompanyType`,
   },
-  location: { //rack
+  location: {
+    //rack
     get: `${url}/api/Location/Area`,
+  },
+  request: {
+    get: `${url}/api/ColocationRequest`,
   },
 };
 
