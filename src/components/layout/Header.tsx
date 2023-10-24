@@ -40,7 +40,7 @@ const items: MenuItem[] = [
   ]),
 ];
 
-const HeaderComponent: React.FC = () => {
+const HeaderComponent: React.FC<{ className?: string }> = ({ className }) => {
   const dispatch = useDispatch();
   const { collapsed, sliderMenuItemSelectedKey } = useSelector(
     (state) => state.global
@@ -49,6 +49,7 @@ const HeaderComponent: React.FC = () => {
   return (
     <>
       <Header
+        className={className}
         style={{
           position: "sticky",
           width: "100%",

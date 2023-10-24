@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { PaginationParam } from "@/models/base";
 import { getRequestData } from "@/slices/request";
 import { RequestData } from "@/models/request";
+import ViewDetailRequestForm from "@/components/request/ViewDetailRequestForm";
 
 export default function page() {
   const dispatch = useDispatch();
@@ -51,7 +52,8 @@ export default function page() {
             <SearchRequestList />
           </div>
           <div style={{ paddingTop: "10px" }}>
-            <RequestListTable />
+            {/* <RequestListTable /> */}
+            <ViewDetailRequestForm />
           </div>
         </>
       }
