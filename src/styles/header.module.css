@@ -1,0 +1,15 @@
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+.slider {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: calc(100vh - 93px);
+  width: 200px;
+  z-index: 999;
+  /* height: calc(100% - 100px); */
+}

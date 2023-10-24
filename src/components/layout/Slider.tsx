@@ -55,7 +55,7 @@ const items: MenuItem[] = [
 ];
 
 const { Sider } = Layout;
-const SliderComponent: React.FC = () => {
+const SliderComponent: React.FC<{ className?: string }> = ({ className }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { data: session } = useSession();
@@ -63,8 +63,6 @@ const SliderComponent: React.FC = () => {
   const { collapsed, sliderMenuItemSelectedKey } = useSelector(
     (state) => state.global
   );
-
-  console.log(session);
 
   const getFilteredItems = (role: string) => {
     switch (role) {
@@ -94,6 +92,7 @@ const SliderComponent: React.FC = () => {
 
   return (
     <Sider
+      className={className}
       trigger={null}
       collapsible
       collapsed={collapsed}
