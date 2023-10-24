@@ -7,17 +7,17 @@ import RequestListTable from "@/components/request/RequestListTable";
 import SearchRequestList from "@/components/request/SearchRequestList";
 import useDispatch from "@/hooks/use-dispatch";
 import { useSession } from "next-auth/react";
-import { ParamGet } from "@/models/base";
+import { PaginationParam } from "@/models/base";
 import { getRequestData } from "@/slices/request";
 import { RequestData } from "@/models/request";
 
 export default function page() {
   const dispatch = useDispatch();
   const { data: session } = useSession();
-  const [paramGet, setParamGet] = useState<ParamGet>({
+  const [paramGet, setParamGet] = useState<PaginationParam>({
     PageIndex: 1,
     PageSize: 10,
-  } as ParamGet);
+  } as PaginationParam);
 
   const getData = () => {
     dispatch(

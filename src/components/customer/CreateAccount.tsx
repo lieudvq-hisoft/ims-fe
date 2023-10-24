@@ -23,7 +23,7 @@ const formItemLayout = {
   },
 };
 
-const CreateOneAccount: React.FC<Props> = ({ form }) => {
+const CreateAccount: React.FC<Props> = ({ form }) => {
   // const [form] = Form.useForm();
 
   const onFinish = (values: any) => {};
@@ -160,4 +160,4 @@ const CreateOneAccount: React.FC<Props> = ({ form }) => {
   );
 };
 
-export default CreateOneAccount;
+export default CreateAccount;

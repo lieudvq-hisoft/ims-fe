@@ -1,5 +1,5 @@
-import { ParamGet } from "@/models/base";
-import { Customer, CustomerData, CustomerCreate } from "@/models/customer";
+import { PaginationParam } from "@/models/base";
+import { Customer, CustomerList, CustomerCreate } from "@/models/customer";
 import apiLinks from "@/utils/api-links";
 import httpClient from "@/utils/http-client";
 
@@ -29,8 +29,8 @@ const createCustomer = async (
 
 const getCustomerData = async (
   token: string,
-  paramGet: ParamGet
-): Promise<CustomerData> => {
+  paramGet: PaginationParam
+): Promise<CustomerList> => {
   const response = await httpClient.get({
     url: apiLinks.customer.get,
     token: token,

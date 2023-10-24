@@ -23,7 +23,7 @@ const props: UploadProps = {
   },
 };
 
-const CreateMoreAccount: React.FC = () => (
+const CreateMultipleAccount: React.FC = () => (
   <>
     <Title type="danger" style={{ textAlign: "center" }} level={3}>
       Thêm Nhiều Tài Khoản Mới
@@ -41,4 +41,4 @@ const CreateMoreAccount: React.FC = () => (
   </>
 );
 
-export default CreateMoreAccount;
+export default CreateMultipleAccount;

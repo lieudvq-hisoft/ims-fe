@@ -45,7 +45,7 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
   //   setOpen(false);
   // };
 
-  const onDelete = (customer: Customer) => {
+  const onDeleteButtonClick = (customer: Customer) => {
     confirm({
       title: "Delete",
       content: (
@@ -60,7 +60,7 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
         await customerService
           .deleteCustomer(session?.user.access_token!, customer.id)
           .then(() => {
-            onRefresh();
+            props.onRefresh();
             toast.success(`Delete blog successful`);
           })
           .catch((errors) => {
@@ -72,7 +72,7 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
     });
   };
 
-  const onUpdate = async (values: CustomerEdit) => {
+  const onUpdateButtonClick = async (values: CustomerEdit) => {
     if (customer?.id) {
       // sử dụng customer?.id để lấy id của đối tượng được chọn
       const updatedValues = { ...values, id: customer.id }; // tạo một đối tượng mới với id và các giá trị khác từ form
@@ -88,9 +88,6 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
           toast.error(errors.response.data ?? "Update category failed");
         });
     }
-  };
-  const onRefresh = () => {
-    setOpen(false);
   };
 
   const columns: ColumnsType<DataType> = [
@@ -127,7 +124,7 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
         <Space size="middle">
           <a>Chi tiết </a>
           <a onClick={() => showEditCustomerModal(record)}>Chỉnh sửa </a>
-          <a onClick={() => onDelete(record)}>Xóa</a>
+          <a onClick={() => onDeleteButtonClick(record)}>Xóa</a>
         </Space>
       ),
     },
@@ -157,7 +154,7 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
       <EditCustomerModal
         customer={customer}
         open={open}
-        onCreate={onUpdate}
+        onCreate={onUpdateButtonClick}
         onCancel={() => {
           setOpen(false);
         }}

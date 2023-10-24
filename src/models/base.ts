@@ -10,7 +10,7 @@ export interface PagingModel {
   pageSkip: number;
 }
 
-export interface ParamGet {
+export interface PaginationParam {
   PageIndex: number;
   PageSize: number;
   SortKey: string;

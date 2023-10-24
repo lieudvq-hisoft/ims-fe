@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ParamGet } from "@/models/base";
+import { PaginationParam } from "@/models/base";
 import { RequestData } from "@/models/request";
 import requestService from "@/services/request";
 
@@ -17,7 +17,7 @@ const TYPE_PREFIX = "request";
 
 const getRequestData = createAsyncThunk(
   `${TYPE_PREFIX}/getRequestData`,
-  async (arg: { token: string; paramGet: ParamGet }) => {
+  async (arg: { token: string; paramGet: PaginationParam }) => {
     const result = await requestService.getRequestData(arg.token, arg.paramGet);
     return result;
   }

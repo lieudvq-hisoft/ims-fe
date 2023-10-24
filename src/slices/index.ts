@@ -1,5 +1,5 @@
 import global from "./global";
-import customer from "./customer";
+import customer from "./customerList";
 import location from "./location";
 import request from "./request";
 

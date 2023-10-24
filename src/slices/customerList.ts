@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import customerService from "@/services/customer";
-import { CustomerData } from "@/models/customer";
-import { ParamGet } from "@/models/base";
+import { CustomerList } from "@/models/customer";
+import { PaginationParam } from "@/models/base";
 
 interface State {
-  customerData: CustomerData;
+  customerData: CustomerList;
   customerDataLoading: boolean;
 }
 
 const initialState: State = {
-  customerData: {} as CustomerData,
+  customerData: {} as CustomerList,
   customerDataLoading: false,
 };
 
@@ -17,7 +17,7 @@ const TYPE_PREFIX = "customer";
 
 const getCustomerData = createAsyncThunk(
   `${TYPE_PREFIX}/getCustomerData`,
-  async (arg: { token: string; paramGet: ParamGet }) => {
+  async (arg: { token: string; paramGet: PaginationParam }) => {
     const result = await customerService.getCustomerData(
       arg.token,
       arg.paramGet

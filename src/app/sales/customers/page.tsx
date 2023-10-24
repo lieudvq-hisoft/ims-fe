@@ -5,38 +5,38 @@ import React from "react";
 import { useEffect, useState } from "react";
 import CustomerListTable from "@/components/customer/CustomerListTable";
 import CreateAndSearchAccount from "@/components/customer/CreateAndSearchAccount";
-import { getCustomerData } from "@/slices/customer";
+import { getCustomerData } from "@/slices/customerList";
 import { useSession } from "next-auth/react";
-import { ParamGet } from "@/models/base";
-import { CustomerData } from "@/models/customer";
+import { PaginationParam } from "@/models/base";
+import { CustomerList } from "@/models/customer";
 import useDispatch from "@/hooks/use-dispatch";
 import Home from "@/app/home/page";
 
 export default function page() {
   const dispatch = useDispatch();
   const { data: session } = useSession();
-  const [paramGet, setParamGet] = useState<ParamGet>({
+  const [paginationParam, setPaginationParam] = useState<PaginationParam>({
     PageIndex: 1,
     PageSize: 10,
-  } as ParamGet);
+  } as PaginationParam);
 
   const getData = () => {
     dispatch(
       getCustomerData({
         token: session?.user.access_token!,
-        paramGet: { ...paramGet },
+        paramGet: { ...paginationParam },
       })
     ).then(({ payload }) => {
-      var res = payload as CustomerData;
-      if (res.totalPage < paramGet.PageIndex && res.totalPage != 0) {
-        setParamGet({ ...paramGet, PageIndex: res.totalPage });
+      var res = payload as CustomerList;
+      if (res.totalPage < paginationParam.PageIndex && res.totalPage != 0) {
+        setPaginationParam({ ...paginationParam, PageIndex: res.totalPage });
       }
     });
   };
 
   useEffect(() => {
     session && getData();
-  }, [session, paramGet]);
+  }, [session, paginationParam]);
 
   return (
     <Home

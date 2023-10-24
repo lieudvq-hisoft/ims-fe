@@ -1,10 +1,10 @@
-import { ParamGet } from "@/models/base";
+import { PaginationParam } from "@/models/base";
 import apiLinks from "@/utils/api-links";
 import httpClient from "@/utils/http-client";
 
 const getRequestData = async (
   token: string,
-  paramGet: ParamGet
+  paramGet: PaginationParam
 ): Promise<any> => {
   const response = await httpClient.get({
     url: apiLinks.request.get,

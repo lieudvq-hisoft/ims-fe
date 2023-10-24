@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { Button, Form, Modal, Tabs } from "antd";
 import Search from "antd/es/input/Search";
-import CreateOneAccount from "./CreateOneAccount";
-import CreateMoreAccount from "./CreateMoreAccount";
+import CreateAccount from "./CreateAccount";
+import CreateMultipleAccount from "./CreateMultipleAccount";
 import { CustomerCreate } from "@/models/customer";
 import customerService from "@/services/customer";
 import { useSession } from "next-auth/react";
@@ -49,10 +49,10 @@ const CreateModalForm: React.FC<CollectionCreateFormProps> = ({
     >
       <Tabs defaultActiveKey="1" centered onChange={onChange}>
         <TabPane key={"1"} tab="Một">
-          <CreateOneAccount form={form} />
+          <CreateAccount form={form} />
         </TabPane>
         <TabPane key={"2"} tab="Nhiều">
-          <CreateMoreAccount />
+          <CreateMultipleAccount />
         </TabPane>
       </Tabs>
     </Modal>
@@ -63,14 +63,14 @@ const CreateAndSearchAccount: React.FC<{ onRefresh: () => void }> = ({
   onRefresh,
 }) => {
   const { data: session } = useSession();
-  const [open, setOpen] = useState(false);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
 
   const onSubmitCreateCustomer = async (values: CustomerCreate) => {
     await customerService
       .createCustomer(session?.user.access_token!, values)
       .then(() => {
         onRefresh();
-        setOpen(false);
+        setCreateModalOpen(false);
         toast.success(`Create category successful`);
       })
       .catch((errors) => {
@@ -88,16 +88,16 @@ const CreateAndSearchAccount: React.FC<{ onRefresh: () => void }> = ({
       <Button
         type="primary"
         onClick={() => {
-          setOpen(true);
+          setCreateModalOpen(true);
         }}
       >
         Tạo Tài Khoản Mới
       </Button>
       <CreateModalForm
-        open={open}
+        open={createModalOpen}
         onCreate={onSubmitCreateCustomer}
         onCancel={() => {
-          setOpen(false);
+          setCreateModalOpen(false);
         }}
       />
       <div style={{ display: "flex", alignItems: "center" }}>

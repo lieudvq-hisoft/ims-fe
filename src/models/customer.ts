@@ -11,7 +11,7 @@ export interface Customer extends Base {
   taxNumber: string;
 }
 
-export interface CustomerData extends PagingModel {
+export interface CustomerList extends PagingModel {
   data: Customer[];
 }
 
