@@ -10,40 +10,24 @@ import customerService from "@/services/customer";
 import { useSession } from "next-auth/react";
 const { confirm } = Modal;
 
-export interface DataType {
-  key: React.Key;
-  id: string;
-  companyName: string;
-  fullname: string;
-  address: string;
-  phoneNumber: string;
-  email: string;
-  taxNumber: string;
-}
-
 interface CustomerListTableProps {
   onRefresh: () => void;
 }
 
 const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
-  const [customer, setCustomer] = useState<DataType | null>(null);
+  const [customer, setCustomer] = useState<Customer | null>(null);
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
 
-  const { customerDataLoading, customerData } = useSelector(
-    (state) => state.customer
+  const { customersLoading: customerDataLoading, customers: customerData } = useSelector(
+    (state) => state.customers
   );
 
-  const showEditCustomerModal = (record: DataType) => {
+  const showEditCustomerModal = (record: Customer) => {
     setCustomer(record);
     setOpen(true);
   };
-
-  // const onCreate = (values: any) => {
-  //   console.log("Received values of form: ", values);
-  //   setOpen(false);
-  // };
 
   const onDeleteButtonClick = (customer: Customer) => {
     confirm({
@@ -90,7 +74,7 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
     }
   };
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<Customer> = [
     {
       title: "Tên công ty",
       dataIndex: "companyName",
@@ -130,7 +114,7 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
     },
   ];
 
-  const data: DataType[] = [];
+  const data: Customer[] = [];
   for (let i = 0; i < customerData?.data?.length; ++i) {
     data.push({
       key: customerData?.data[i].id,
@@ -138,6 +122,7 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
       companyName: customerData?.data[i].companyName,
       fullname: customerData?.data[i].fullname,
       address: customerData?.data[i].address,
+      companyType: customerData?.data[i].companyType,
       phoneNumber: customerData?.data[i].phoneNumber,
       email: customerData?.data[i].email,
       taxNumber: customerData?.data[i].taxNumber,

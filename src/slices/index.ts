@@ -1,11 +1,13 @@
 import global from "./global";
-import customer from "./customerList";
+import customers from "./customer";
 import location from "./location";
 import request from "./request";
+import myAccount from "./myAccount";
 
 export default {
   global,
-  customer,
+  customers,
   location,
   request,
+  myAccount
 };

@@ -4,13 +4,13 @@ import { CustomerList } from "@/models/customer";
 import { PaginationParam } from "@/models/base";
 
 interface State {
-  customerData: CustomerList;
-  customerDataLoading: boolean;
+  customers: CustomerList;
+  customersLoading: boolean;
 }
 
 const initialState: State = {
-  customerData: {} as CustomerList,
-  customerDataLoading: false,
+  customers: {} as CustomerList,
+  customersLoading: false,
 };
 
 const TYPE_PREFIX = "customer";
@@ -33,16 +33,16 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getCustomerData.pending, (state) => ({
       ...state,
-      customerDataLoading: true,
+      customersLoading: true,
     }));
     builder.addCase(getCustomerData.fulfilled, (state, { payload }) => ({
       ...state,
-      customerData: payload,
-      customerDataLoading: false,
+      customers: payload,
+      customersLoading: false,
     }));
     builder.addCase(getCustomerData.rejected, (state) => ({
       ...state,
-      customerDataLoading: false,
+      customersLoading: false,
     }));
   },
 });

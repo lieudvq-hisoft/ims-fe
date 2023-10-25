@@ -2,15 +2,14 @@
 import React, { useEffect } from "react";
 import { Form, Input, Modal } from "antd";
 import { Typography } from "antd";
-import { DataType } from "./CustomerListTable";
-import { CustomerEdit } from "@/models/customer";
+import { Customer, CustomerEdit } from "@/models/customer";
 const { Title } = Typography;
 
 interface CollectionEditFormProps {
   open: boolean;
   onCreate: (values: CustomerEdit) => void;
   onCancel: () => void;
-  customer: DataType | null;
+  customer: Customer | null;
 }
 
 const EditCustomerModal: React.FC<CollectionEditFormProps> = ({

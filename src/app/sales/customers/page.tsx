@@ -5,7 +5,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import CustomerListTable from "@/components/customer/CustomerListTable";
 import CreateAndSearchAccount from "@/components/customer/CreateAndSearchAccount";
-import { getCustomerData } from "@/slices/customerList";
+import { getCustomerData } from "@/slices/customer";
 import { useSession } from "next-auth/react";
 import { PaginationParam } from "@/models/base";
 import { CustomerList } from "@/models/customer";

@@ -1,6 +1,7 @@
 import { Base, PagingModel } from "./base";
 
 export interface Customer extends Base {
+  key: React.Key;
   id: string;
   companyName: string;
   fullname: string;
