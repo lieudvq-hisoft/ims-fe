@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import useSelector from "@/hooks/use-selector";
+import { useRouter } from "next/navigation";
 
 interface DataType {
   key: string;
@@ -16,6 +17,7 @@ interface DataType {
 
 const RequestListTable: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const { requestDataLoading, requestData } = useSelector(
     (state) => state.request
@@ -68,7 +70,14 @@ const RequestListTable: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <a>Chi tiết </a>
+          <a
+            onClick={(e) => {
+              const rackId = e.currentTarget.getAttribute("data-rack-id");
+              router.push(`/technical/requests/request-detail`);
+            }}
+          >
+            Chi tiết{" "}
+          </a>
           <a onClick={() => showEditTicketModal()}>Chỉnh sửa </a>
           <a>Xóa</a>
         </Space>
