@@ -11,14 +11,15 @@ import { toast } from "react-toastify";
 import useDispatch from "@/hooks/use-dispatch";
 import Email from "next-auth/providers/email";
 
-const InfomationForm: React.FC = () => {
-  const [myAccount, setMyAccount] = useState<User | null>(null);
+interface Props {
+  myAccountInfo: User;
+}
+
+const InfomationForm: React.FC<Props> = ({
+  myAccountInfo
+}) => {
   const { data: session } = useSession();
   const dispatch = useDispatch();
-
-  const { myAccountInfo } = useSelector(
-    (state) => state.myAccount
-  );
 
   const tailFormItemLayout = {
     wrapperCol: {
@@ -115,11 +116,6 @@ const InfomationForm: React.FC = () => {
           <Form.Item label="Mật khẩu" name="password"
             rules={[
               {
-                required: true,
-                message: "Vui lòng nhập mật khẩu",
-                whitespace: true
-              },
-              {
                 pattern: new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})"),
                 message: "Vui lòng nhập mật khảu tối thiểu 8 ký tự, có chữ thường, chữ hoa và ký tự đặc biệt!"
               }]}>
@@ -130,12 +126,12 @@ const InfomationForm: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập mật khẩu",
-                whitespace: true
+                message: "Vui lòng nhập số điện thoại",
+                whitespace: false
               },
               {
-                pattern: new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})"),
-                message: "Vui lòng nhập mật khảu tối thiểu 8 ký tự, có chữ thường, chữ hoa và ký tự đặc biệt!"
+                pattern: new RegExp(/^\d{10}$/),
+                message: "Vui lòng nhập số điện thoại gồm 10 số"
               }]}>
             <Input />
           </Form.Item>

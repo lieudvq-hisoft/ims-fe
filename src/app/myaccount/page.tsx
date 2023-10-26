@@ -7,13 +7,16 @@ import InfomationForm from "@/components/myaccount/InfomationForm";
 import { getMyAccountInfo } from "@/slices/myAccount";
 import { useSession } from "next-auth/react";
 import useDispatch from "@/hooks/use-dispatch";
-import { User } from "@/models/user";
+import useSelector from "@/hooks/use-selector";
 
 //trang này chung, của tài khoản cá nhân
 
 export default function page() {
   const dispatch = useDispatch();
   const { data: session } = useSession();
+  const { myAccountInfo } = useSelector(
+    (state) => state.myAccount
+  );
 
   const getData = () => {
     dispatch(
@@ -25,7 +28,7 @@ export default function page() {
 
   useEffect(() => {
     session && getData();
-  }, [session]);
+  }, [session, myAccountInfo]);
 
   return (
     <Home
@@ -37,7 +40,7 @@ export default function page() {
             </h1>
           </div>
           <div style={{ paddingTop: "10px" }}>
-            <InfomationForm />
+            <InfomationForm myAccountInfo={myAccountInfo} />
           </div>
         </>
       }
