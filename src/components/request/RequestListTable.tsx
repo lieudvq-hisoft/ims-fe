@@ -72,7 +72,6 @@ const RequestListTable: React.FC = () => {
         <Space size="middle">
           <a
             onClick={(e) => {
-              const rackId = e.currentTarget.getAttribute("data-rack-id");
               router.push(`/technical/requests/request-detail`);
             }}
           >

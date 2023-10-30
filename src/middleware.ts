@@ -79,8 +79,10 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(`${process.env.NEXTAUTH_URL}`);
       }
       break;
+
     case "/technical/maps":
     case "/technical/requests":
+    case "/technical/serverlist":
       if (
         !token ||
         !isExpiredTimeToken(token.loginDate, exp!) ||

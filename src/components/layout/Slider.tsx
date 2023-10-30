@@ -29,26 +29,10 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Accounts", "sub1", <UserOutlined />, [
-    getItem("All Account", "admin/accounts"),
-    getItem("Customer", "customer"),
-    getItem("Manager", "manager"),
-  ]),
-  getItem("Sơ Đồ Server", "maps-tech", <TableOutlined />, [
-    getItem("Khu A", "khuA", <TableOutlined />, [
-      getItem("A1", "technical/maps"),
-      getItem("A2", "A"),
-    ]),
-    getItem("Khu B", "khuB", <TableOutlined />, [
-      getItem("B1", "B1"),
-      getItem("B2", "B2"),
-    ]),
-  ]),
-  getItem("Yêu cầu Khách hàng", "requests-tech", <SnippetsOutlined />, [
-    getItem("Chờ xét duyệt", "technical/requests"),
-    getItem("Thành công", ""),
-    getItem("Thất bại", ""),
-  ]),
+  getItem("Accounts", "sub1", <UserOutlined />),
+  getItem("Sơ Đồ Server", "technical/maps", <TableOutlined />),
+  getItem("Yêu cầu Khách hàng", "technical/requests", <SnippetsOutlined />),
+  getItem("Danh sách Server", "technical/serverlist", <SnippetsOutlined />),
   getItem("Customers", "sales/customers", <UserOutlined />),
   getItem("Tickets", "sales/tickets", <UserOutlined />),
   getItem("Tài khoản của tôi", "myaccount", <UserOutlined />),
@@ -68,15 +52,18 @@ const SliderComponent: React.FC<{ className?: string }> = ({ className }) => {
     switch (role) {
       case "Admin":
         return items.filter((item) =>
-          ["sub1", "myaccount"].some((str) =>
+          ["admin/accounts", "myaccount"].some((str) =>
             String((item ?? { key: "" }).key).includes(str)
           )
         );
       case "Tech":
         return items.filter((item) =>
-          ["requests-tech", "maps-tech", "myaccount"].some((str) =>
-            String((item ?? { key: "" }).key).includes(str)
-          )
+          [
+            "technical/requests",
+            "technical/maps",
+            "technical/serverlist",
+            "myaccount",
+          ].some((str) => String((item ?? { key: "" }).key).includes(str))
         );
 
       case "Sale":
@@ -96,9 +83,9 @@ const SliderComponent: React.FC<{ className?: string }> = ({ className }) => {
       trigger={null}
       collapsible
       collapsed={collapsed}
-      style={{
-        marginTop: "16px",
-      }}
+      // style={{
+      //   marginTop: "16px",
+      // }}
     >
       <div className="demo-logo-vertical" />
       <Menu

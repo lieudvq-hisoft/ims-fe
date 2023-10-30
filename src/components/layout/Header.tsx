@@ -45,6 +45,9 @@ const HeaderComponent: React.FC<{ className?: string }> = ({ className }) => {
   const { collapsed, sliderMenuItemSelectedKey } = useSelector(
     (state) => state.global
   );
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
 
   return (
     <>

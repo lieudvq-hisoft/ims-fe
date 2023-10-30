@@ -8,6 +8,7 @@ import { Customer, CustomerEdit } from "@/models/customer";
 import { toast } from "react-toastify";
 import customerService from "@/services/customer";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 const { confirm } = Modal;
 
 interface CustomerListTableProps {
@@ -18,11 +19,12 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
   const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
 
-  const { customersLoading: customerDataLoading, customers: customerData } = useSelector(
-    (state) => state.customers
-  );
+  const { customersLoading: customerDataLoading, customers: customerData } =
+    useSelector((state) => state.customers);
 
   const showEditCustomerModal = (record: Customer) => {
     setCustomer(record);
@@ -106,7 +108,13 @@ const CustomerListTable: React.FC<CustomerListTableProps> = (props) => {
       key: "action",
       render: (record) => (
         <Space size="middle">
-          <a>Chi tiết </a>
+          <a
+            onClick={(e) => {
+              router.push(`/sales/customers/customer-detail`);
+            }}
+          >
+            Chi tiết{" "}
+          </a>
           <a onClick={() => showEditCustomerModal(record)}>Chỉnh sửa </a>
           <a onClick={() => onDeleteButtonClick(record)}>Xóa</a>
         </Space>

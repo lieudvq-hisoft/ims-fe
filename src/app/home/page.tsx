@@ -22,24 +22,22 @@ const Home: React.FC<Props> = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
   return (
-    <PersistGate loading={<div>loading</div>} persistor={persistor}>
+    <Layout>
+      <HeaderComponent className={styles["header"]} />
       <Layout>
-        <HeaderComponent className={styles["header"]} />
-        <Layout>
-          <SliderComponent className={styles["slider"]} />
-          <Content
-            style={{
-              margin: "16px",
-              background: colorBgContainer,
-              overflowX: "auto",
-              height: "calc(100vh - 96px)",
-            }}
-          >
-            <div className="h-screen">{content}</div>
-          </Content>
-        </Layout>
+        <SliderComponent className={styles["slider"]} />
+        <Content
+          style={{
+            margin: "16px",
+            background: colorBgContainer,
+            overflowX: "auto",
+            height: "calc(100vh - 96px)",
+          }}
+        >
+          <div className="h-screen">{content}</div>
+        </Content>
       </Layout>
-    </PersistGate>
+    </Layout>
   );
 };
 
