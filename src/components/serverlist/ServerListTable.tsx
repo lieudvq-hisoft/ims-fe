@@ -5,20 +5,15 @@ import type { ColumnsType } from "antd/es/table";
 import type { DescriptionsProps } from "antd";
 import CreateNewServer from "./CreateNewServer";
 import { useRouter } from "next/navigation";
-
-interface DataType {
-  key: string;
-  createAt: string;
-  timeChange: string;
-  ipServer: string;
-  status: string;
-  W: number;
-  U: number;
-  userName: string;
-}
+import useSelector from "@/hooks/use-selector";
+import { ServerList } from "@/models/serverList";
 
 const ServerListTable: React.FC = () => {
   const router = useRouter();
+
+  const { serverDataLoading, serverData } = useSelector(
+    (state) => state.serverList
+  );
 
   const items: DescriptionsProps["items"] = [
     {
@@ -43,21 +38,21 @@ const ServerListTable: React.FC = () => {
     },
   ];
 
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<ServerList> = [
     {
       title: "Ngày tạo",
-      dataIndex: "createAt",
-      key: "createAt",
+      dataIndex: "dateCreated",
+      key: "dateCreated",
     },
     {
       title: "Thay đổi gần nhất",
-      dataIndex: "timeChange",
-      key: "timeChange",
+      dataIndex: "dateUpdate",
+      key: "dateUpdate",
     },
     {
       title: "IP Server",
-      dataIndex: "ipServer",
-      key: "ipServer",
+      dataIndex: "ipAddress",
+      key: "ipAddress",
     },
     {
       title: "Trạng thái",
@@ -91,18 +86,18 @@ const ServerListTable: React.FC = () => {
 
     {
       title: "Công suất (W)",
-      dataIndex: "W",
-      key: "W",
+      dataIndex: "power",
+      key: "power",
     },
     {
       title: "Kích thước (U)",
-      dataIndex: "U",
-      key: "U",
+      dataIndex: "size",
+      key: "size",
     },
     {
       title: "Người sở hữu",
-      dataIndex: "userName",
-      key: "userName",
+      dataIndex: "customer",
+      key: "customer",
       render: (text) => <a>{text}</a>,
     },
 
@@ -123,38 +118,50 @@ const ServerListTable: React.FC = () => {
     },
   ];
 
-  const data: DataType[] = [
-    {
-      key: "1",
-      createAt: "2014-12-24 23:12:00",
-      timeChange: "2014-12-24 23:12:00",
-      ipServer: "192.168.1.10",
-      W: 700,
-      U: 1,
-      userName: "username1",
-      status: "Đang hoạt động",
-    },
-    {
-      key: "2",
-      createAt: "2014-12-24 23:12:00",
-      timeChange: "2014-12-24 23:12:00",
-      ipServer: "192.168.1.10",
-      W: 700,
-      U: 1,
-      userName: "username1",
-      status: "Ngừng hoạt động",
-    },
-    {
-      key: "3",
-      createAt: "2014-12-24 23:12:00",
-      timeChange: "2014-12-24 23:12:00",
-      ipServer: "192.168.1.10",
-      W: 700,
-      U: 1,
-      userName: "username1",
-      status: "Tạm ngừng",
-    },
+  const data: ServerList[] = [
+    // {
+    //   key: "1",
+    //   createAt: "2014-12-24 23:12:00",
+    //   timeChange: "2014-12-24 23:12:00",
+    //   ipServer: "192.168.1.10",
+    //   W: 700,
+    //   U: 1,
+    //   userName: "username1",
+    //   status: "Đang hoạt động",
+    // },
+    // {
+    //   key: "2",
+    //   createAt: "2014-12-24 23:12:00",
+    //   timeChange: "2014-12-24 23:12:00",
+    //   ipServer: "192.168.1.10",
+    //   W: 700,
+    //   U: 1,
+    //   userName: "username1",
+    //   status: "Ngừng hoạt động",
+    // },
+    // {
+    //   key: "3",
+    //   createAt: "2014-12-24 23:12:00",
+    //   timeChange: "2014-12-24 23:12:00",
+    //   ipServer: "192.168.1.10",
+    //   W: 700,
+    //   U: 1,
+    //   userName: "username1",
+    //   status: "Tạm ngừng",
+    // },
   ];
+  for (let i = 0; i < serverData?.data?.length; ++i) {
+    data.push({
+      id: serverData?.data[i].id,
+      dateCreated: serverData?.data[i].dateCreated,
+      dateUpdate: serverData?.data[i].dateUpdate,
+      ipAddress: serverData?.data[i].ipAddress,
+      size: serverData?.data[i].size,
+      power: serverData?.data[i].power,
+      customer: serverData?.data[i].customer,
+      status: serverData?.data[i].status,
+    });
+  }
 
   const [filteredData, setFilteredData] = useState(data);
 
@@ -192,8 +199,9 @@ const ServerListTable: React.FC = () => {
       </Space>
       <CreateNewServer />
       <Table
+        loading={serverDataLoading}
         columns={columns}
-        dataSource={filteredData}
+        dataSource={data}
         style={{ paddingLeft: "10px", paddingRight: "10px" }}
       />
     </>

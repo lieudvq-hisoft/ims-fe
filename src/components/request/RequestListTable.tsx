@@ -6,7 +6,6 @@ import useSelector from "@/hooks/use-selector";
 import { useRouter } from "next/navigation";
 
 interface DataType {
-  key: string;
   id: string;
   dateCreated: string;
   companyName: string;
@@ -87,7 +86,6 @@ const RequestListTable: React.FC = () => {
   const data: DataType[] = [];
   for (let i = 0; i < requestData?.data?.length; ++i) {
     data.push({
-      key: requestData?.data[i].id,
       id: requestData?.data[i].id,
       dateCreated: requestData?.data[i].dateCreated,
       companyName: requestData?.data[i].companyName,

@@ -7,7 +7,7 @@ export const urlServerSide = "https://imsapi.hisoft.vn";
 const apiLinks = {
   user: {
     login: `${urlServerSide}/api/User/Login`,
-    myAccount: `${url}/api/User/MyAccount`
+    myAccount: `${url}/api/User/MyAccount`,
   },
   customer: {
     create: `${url}/api/Customer`,
@@ -24,6 +24,9 @@ const apiLinks = {
   },
   request: {
     get: `${url}/api/ColocationRequest`,
+  },
+  server: {
+    get: `${url}/api/Server`,
   },
 };
 
