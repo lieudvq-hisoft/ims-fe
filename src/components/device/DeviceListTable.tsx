@@ -1,52 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Badge, Space, Table, Descriptions, Pagination } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { DescriptionsProps } from "antd";
-import CreateNewServer from "./CreateNewServer";
 import { useRouter } from "next/navigation";
 import useSelector from "@/hooks/use-selector";
-import { ServerList, ServerListData } from "@/models/serverList";
+import { ServerList } from "@/models/serverList";
 import { PaginationParam } from "@/models/base";
-import useDispatch from "@/hooks/use-dispatch";
-import { useSession } from "next-auth/react";
-import { getServerListData } from "@/slices/serverList";
 
-const ServerListTable: React.FC = () => {
-  const dispatch = useDispatch();
-  const { data: session } = useSession();
-  const [paramGet, setParamGet] = useState<PaginationParam>({
-    PageIndex: 1,
-    PageSize: 10,
-  } as PaginationParam);
-
+const DeviceListTable: React.FC = () => {
   const router = useRouter();
-  const { serverDataLoading, serverData } = useSelector(
-    (state) => state.serverList
-  );
-
-  const [filterStatus, setFilterStatus] = useState<string | null>(null);
-
-  const getData = () => {
-    dispatch(
-      getServerListData({
-        token: session?.user.access_token!,
-        paramGet: { ...paramGet },
-      })
-    ).then(({ payload }) => {
-      var res = payload as ServerListData;
-      if (payload) {
-        var res = payload as ServerListData;
-        if (res.totalPage < paramGet.PageIndex && res.totalPage != 0) {
-          setParamGet({ ...paramGet, PageIndex: res.totalPage });
-        }
-      }
-    });
-  };
-
-  useEffect(() => {
-    session && getData();
-  }, [session, paramGet]);
 
   const items: DescriptionsProps["items"] = [
     {
@@ -83,7 +46,7 @@ const ServerListTable: React.FC = () => {
       key: "dateUpdate",
     },
     {
-      title: "IP Server",
+      title: "Tên thiết bị",
       dataIndex: "ipAddress",
       key: "ipAddress",
     },
@@ -128,6 +91,11 @@ const ServerListTable: React.FC = () => {
       key: "size",
     },
     {
+      title: "Vị trí",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
       title: "Người sở hữu",
       dataIndex: "customer",
       key: "customer",
@@ -146,58 +114,41 @@ const ServerListTable: React.FC = () => {
           >
             Chi tiết{" "}
           </a>
+          <a>Chỉnh sửa</a>
         </Space>
       ),
     },
   ];
 
   const data: ServerList[] = [];
-  for (let i = 0; i < serverData?.data?.length; ++i) {
-    data.push({
-      id: serverData?.data[i].id,
-      dateCreated: serverData?.data[i].dateCreated,
-      dateUpdate: serverData?.data[i].dateUpdate,
-      ipAddress: serverData?.data[i].ipAddress,
-      size: serverData?.data[i].size,
-      power: serverData?.data[i].power,
-      customer: serverData?.data[i].customer,
-      status: serverData?.data[i].status,
-    });
-  }
+  //   for (let i = 0; i < serverData?.data?.length; ++i) {
+  //     data.push({
+  //       id: serverData?.data[i].id,
+  //       dateCreated: serverData?.data[i].dateCreated,
+  //       dateUpdate: serverData?.data[i].dateUpdate,
+  //       ipAddress: serverData?.data[i].ipAddress,
+  //       size: serverData?.data[i].size,
+  //       power: serverData?.data[i].power,
+  //       customer: serverData?.data[i].customer,
+  //       status: serverData?.data[i].status,
+  //     });
+  //   }
 
-  const [filteredData, setFilteredData] = useState<ServerList[]>([]);
-
-  useEffect(() => {
-    const newData = serverData?.data?.map((item) => ({
-      id: item.id,
-      dateCreated: item.dateCreated,
-      dateUpdate: item.dateUpdate,
-      ipAddress: item.ipAddress,
-      size: item.size,
-      power: item.power,
-      customer: item.customer,
-      status: item.status,
-    }));
-
-    if (filterStatus) {
-      setFilteredData(
-        newData?.filter((item) => item.status === filterStatus) ?? []
-      );
-    } else {
-      setFilteredData(newData ?? []);
-    }
-  }, [serverData, filterStatus]);
+  const [filteredData, setFilteredData] = useState(data);
 
   const handleFilter = (status: string) => {
-    setFilterStatus(status === "all" ? null : status);
-    setParamGet((prevParamGet) => ({ ...prevParamGet, PageIndex: 1 }));
+    const filtered =
+      status === "all" ? data : data.filter((item) => item.status === status);
+    setFilteredData(filtered);
+    console.log("data", data);
+    console.log(filtered);
   };
 
   return (
     <>
       <Descriptions
         column={4}
-        title="Thông số server"
+        title="Thông số thiết bị"
         items={items}
         style={{ paddingLeft: "20px" }}
       />
@@ -217,32 +168,15 @@ const ServerListTable: React.FC = () => {
           Ngừng hoạt động
         </Button>
       </Space>
-      <CreateNewServer />
       <Table
         pagination={false}
-        loading={serverDataLoading}
+        // loading={serverDataLoading}
         columns={columns}
-        dataSource={filteredData}
+        dataSource={data}
         style={{ paddingLeft: "10px", paddingRight: "10px" }}
       />
-      {serverData.totalPage > 0 && (
-        <Pagination
-          style={{ paddingBottom: "15px" }}
-          className="text-end m-5"
-          current={paramGet.PageIndex}
-          pageSize={serverData.pageSize ?? 10}
-          total={serverData.totalSize}
-          onChange={(page, pageSize) => {
-            setParamGet((prevParamGet) => ({
-              ...prevParamGet,
-              PageIndex: page,
-              PageSize: pageSize,
-            }));
-          }}
-        />
-      )}
     </>
   );
 };
 
-export default ServerListTable;
+export default DeviceListTable;

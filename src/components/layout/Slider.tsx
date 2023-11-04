@@ -29,10 +29,17 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Accounts", "sub1", <UserOutlined />),
+  getItem("Accounts", "admin/accounts", <UserOutlined />),
   getItem("Sơ Đồ Server", "technical/maps", <TableOutlined />),
   getItem("Yêu cầu Khách hàng", "technical/requests", <SnippetsOutlined />),
   getItem("Danh sách Server", "technical/serverlist", <SnippetsOutlined />),
+  getItem("Danh sách thiết bị", "technical/devices", <SnippetsOutlined />),
+  getItem(
+    "Lịch hẹn với Khách hàng",
+    "technical/appointment",
+    <SnippetsOutlined />
+  ),
+
   getItem("Customers", "sales/customers", <UserOutlined />),
   getItem("Tickets", "sales/tickets", <UserOutlined />),
   getItem("Tài khoản của tôi", "myaccount", <UserOutlined />),
@@ -62,6 +69,8 @@ const SliderComponent: React.FC<{ className?: string }> = ({ className }) => {
             "technical/requests",
             "technical/maps",
             "technical/serverlist",
+            "technical/devices",
+            "technical/appointment",
             "myaccount",
           ].some((str) => String((item ?? { key: "" }).key).includes(str))
         );

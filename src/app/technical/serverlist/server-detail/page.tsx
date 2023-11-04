@@ -4,7 +4,7 @@
 import React from "react";
 import Home from "@/app/home/page";
 import { Breadcrumb } from "antd";
-import ServerListTable from "@/components/serverlist/ServerListTable";
+import ServerDetailTable from "@/components/serverlist/ServerDetailTable";
 
 export default function page() {
   return (
@@ -23,6 +23,7 @@ export default function page() {
               },
               {
                 title: "Xem danh sách",
+                href: "/technical/serverlist",
               },
               {
                 title: "Xem chi tiết server",
@@ -32,7 +33,9 @@ export default function page() {
           <div style={{ paddingLeft: "10px" }}>
             <h1 style={{ paddingBottom: "10px" }}>IP Server</h1>
           </div>
-          <div style={{ paddingTop: "10px" }}></div>
+          <div style={{ paddingTop: "10px" }}>
+            <ServerDetailTable />
+          </div>
         </>
       }
     />

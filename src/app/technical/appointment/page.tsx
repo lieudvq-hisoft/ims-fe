@@ -11,17 +11,9 @@ import { PaginationParam } from "@/models/base";
 import { getServerListData } from "@/slices/serverList";
 import { ServerListData } from "@/models/serverList";
 import useSelector from "@/hooks/use-selector";
+import AppoitmentListTable from "@/components/appointment/AppoitmentListTable";
 
 export default function page() {
-  const dispatch = useDispatch();
-  const { data: session } = useSession();
-  const [paramGet, setParamGet] = useState<PaginationParam>({
-    PageIndex: 1,
-    PageSize: 10,
-  } as PaginationParam);
-
-  const { serverData } = useSelector((state) => state.serverList);
-
   return (
     <Home
       content={
@@ -42,10 +34,25 @@ export default function page() {
             ]}
           />
           <div style={{ padding: "14px" }}>
-            <h1 style={{ paddingBottom: "10px" }}>Danh sách Server</h1>
+            <h1 style={{ paddingBottom: "10px" }}>Danh sách lịch hẹn</h1>
           </div>
           <div style={{ paddingTop: "10px" }}>
-            <ServerListTable />
+            <AppoitmentListTable />
+            {/* {serverData.totalPage > 0 && (
+              <Pagination
+                className="text-end m-4"
+                current={paramGet.PageIndex}
+                pageSize={serverData.pageSize ?? 10}
+                total={serverData.totalSize}
+                onChange={(page, pageSize) => {
+                  setParamGet({
+                    ...paramGet,
+                    PageIndex: page,
+                    PageSize: pageSize,
+                  });
+                }}
+              />
+            )} */}
           </div>
         </>
       }
