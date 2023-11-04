@@ -1,15 +1,53 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Badge, Space, Table, Descriptions, Pagination } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { DescriptionsProps } from "antd";
 import { useRouter } from "next/navigation";
 import useSelector from "@/hooks/use-selector";
-import { ServerList } from "@/models/serverList";
 import { PaginationParam } from "@/models/base";
+import useDispatch from "@/hooks/use-dispatch";
+import { useSession } from "next-auth/react";
+import { getDeviceData } from "@/slices/device";
+import { Device, DeviceData } from "@/models/device";
 
 const DeviceListTable: React.FC = () => {
+  const dispatch = useDispatch();
+  const { data: session } = useSession();
+  const [paramGet, setParamGet] = useState<PaginationParam>({
+    PageIndex: 1,
+    PageSize: 10,
+  } as PaginationParam);
+
   const router = useRouter();
+  const { deviceDataLoading, deviceData } = useSelector(
+    (state) => state.device
+  );
+
+  const [filterDeviceStatus, setFilterDeviceStatus] = useState<string | null>(
+    null
+  );
+
+  const getData = () => {
+    dispatch(
+      getDeviceData({
+        token: session?.user.access_token!,
+        paramGet: { ...paramGet },
+      })
+    ).then(({ payload }) => {
+      var res = payload as DeviceData;
+      if (payload) {
+        var res = payload as DeviceData;
+        if (res.totalPage < paramGet.PageIndex && res.totalPage != 0) {
+          setParamGet({ ...paramGet, PageIndex: res.totalPage });
+        }
+      }
+    });
+  };
+
+  useEffect(() => {
+    session && getData();
+  }, [session, paramGet]);
 
   const items: DescriptionsProps["items"] = [
     {
@@ -34,7 +72,7 @@ const DeviceListTable: React.FC = () => {
     },
   ];
 
-  const columns: ColumnsType<ServerList> = [
+  const columns: ColumnsType<Device> = [
     {
       title: "Ngày tạo",
       dataIndex: "dateCreated",
@@ -47,8 +85,8 @@ const DeviceListTable: React.FC = () => {
     },
     {
       title: "Tên thiết bị",
-      dataIndex: "ipAddress",
-      key: "ipAddress",
+      dataIndex: "type",
+      key: "type",
     },
     {
       title: "Trạng thái",
@@ -82,24 +120,18 @@ const DeviceListTable: React.FC = () => {
 
     {
       title: "Công suất (W)",
-      dataIndex: "power",
-      key: "power",
+      dataIndex: "basePower",
+      key: "basePower",
     },
     {
       title: "Kích thước (U)",
-      dataIndex: "size",
-      key: "size",
+      dataIndex: "baseSize",
+      key: "baseSize",
     },
     {
       title: "Vị trí",
-      dataIndex: "location",
-      key: "location",
-    },
-    {
-      title: "Người sở hữu",
-      dataIndex: "customer",
-      key: "customer",
-      render: (text) => <a>{text}</a>,
+      dataIndex: "rack",
+      key: "rack",
     },
 
     {
@@ -109,7 +141,7 @@ const DeviceListTable: React.FC = () => {
         <Space size="middle">
           <a
             onClick={(e) => {
-              router.push(`/technical/serverlist/server-detail`);
+              // router.push(`/technical/serverlist/server-detail`);
             }}
           >
             Chi tiết{" "}
@@ -120,28 +152,35 @@ const DeviceListTable: React.FC = () => {
     },
   ];
 
-  const data: ServerList[] = [];
-  //   for (let i = 0; i < serverData?.data?.length; ++i) {
-  //     data.push({
-  //       id: serverData?.data[i].id,
-  //       dateCreated: serverData?.data[i].dateCreated,
-  //       dateUpdate: serverData?.data[i].dateUpdate,
-  //       ipAddress: serverData?.data[i].ipAddress,
-  //       size: serverData?.data[i].size,
-  //       power: serverData?.data[i].power,
-  //       customer: serverData?.data[i].customer,
-  //       status: serverData?.data[i].status,
-  //     });
-  //   }
+  const [filteredDeviceData, setFilteredDeviceData] = useState<Device[]>([]);
 
-  const [filteredData, setFilteredData] = useState(data);
+  useEffect(() => {
+    const newData = deviceData?.data?.map((item) => ({
+      id: item.id,
+      dateCreated: item.dateCreated,
+      dateUpdate: item.dateUpdate,
+      type: item.type,
+      baseSize: item.baseSize,
+      basePower: item.basePower,
+      rack: item.rack,
+      status: item.status,
+    }));
+
+    if (filterDeviceStatus) {
+      setFilteredDeviceData(
+        newData?.filter((item) => item.status === filterDeviceStatus) ?? []
+      );
+    } else {
+      setFilteredDeviceData(newData ?? []);
+    }
+  }, [deviceData, filterDeviceStatus]);
 
   const handleFilter = (status: string) => {
-    const filtered =
-      status === "all" ? data : data.filter((item) => item.status === status);
-    setFilteredData(filtered);
-    console.log("data", data);
-    console.log(filtered);
+    setParamGet((prevParamGet) => ({
+      ...prevParamGet,
+      PageIndex: 1,
+      status: status === "all" ? null : status,
+    }));
   };
 
   return (
@@ -160,21 +199,33 @@ const DeviceListTable: React.FC = () => {
         }}
       >
         <Button onClick={() => handleFilter("all")}>Tất cả</Button>
-        <Button onClick={() => handleFilter("Đang hoạt động")}>
-          Đang hoạt động
-        </Button>
-        <Button onClick={() => handleFilter("Tạm ngừng")}>Tạm ngừng</Button>
-        <Button onClick={() => handleFilter("Ngừng hoạt động")}>
-          Ngừng hoạt động
-        </Button>
+        <Button onClick={() => handleFilter("Ongoing")}>Đang hoạt động</Button>
+        <Button onClick={() => handleFilter("Stopped")}>Tạm ngừng</Button>
+        <Button onClick={() => handleFilter("Ended")}>Ngừng hoạt động</Button>
       </Space>
       <Table
         pagination={false}
-        // loading={serverDataLoading}
+        loading={deviceDataLoading}
         columns={columns}
-        dataSource={data}
+        dataSource={filteredDeviceData}
         style={{ paddingLeft: "10px", paddingRight: "10px" }}
       />
+      {deviceData.totalPage > 0 && (
+        <Pagination
+          style={{ paddingBottom: "15px" }}
+          className="text-end m-5"
+          current={paramGet.PageIndex}
+          pageSize={deviceData.pageSize ?? 10}
+          total={deviceData.totalSize}
+          onChange={(page, pageSize) => {
+            setParamGet((prevParamGet) => ({
+              ...prevParamGet,
+              PageIndex: page,
+              PageSize: pageSize,
+            }));
+          }}
+        />
+      )}
     </>
   );
 };

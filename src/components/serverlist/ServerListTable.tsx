@@ -26,6 +26,7 @@ const ServerListTable: React.FC = () => {
   );
 
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
+  const [filteredData, setFilteredData] = useState<ServerList[]>([]);
 
   const getData = () => {
     dispatch(
@@ -48,26 +49,34 @@ const ServerListTable: React.FC = () => {
     session && getData();
   }, [session, paramGet]);
 
+  const handleFilter = (status: string) => {
+    setParamGet((prevParamGet) => ({
+      ...prevParamGet,
+      PageIndex: 1,
+      status: status === "all" ? null : status,
+    }));
+  };
+
   const items: DescriptionsProps["items"] = [
     {
       key: "1",
       label: "Tổng số thiết bị",
-      children: "5",
+      children: 0,
     },
     {
       key: "2",
       label: "Đang hoạt động",
-      children: "0",
+      children: 0,
     },
     {
       key: "3",
       label: "Tạm ngừng",
-      children: "0",
+      children: 0,
     },
     {
       key: "4",
       label: "Ngừng hoạt động",
-      children: "0",
+      children: 0,
     },
   ];
 
@@ -151,22 +160,6 @@ const ServerListTable: React.FC = () => {
     },
   ];
 
-  const data: ServerList[] = [];
-  for (let i = 0; i < serverData?.data?.length; ++i) {
-    data.push({
-      id: serverData?.data[i].id,
-      dateCreated: serverData?.data[i].dateCreated,
-      dateUpdate: serverData?.data[i].dateUpdate,
-      ipAddress: serverData?.data[i].ipAddress,
-      size: serverData?.data[i].size,
-      power: serverData?.data[i].power,
-      customer: serverData?.data[i].customer,
-      status: serverData?.data[i].status,
-    });
-  }
-
-  const [filteredData, setFilteredData] = useState<ServerList[]>([]);
-
   useEffect(() => {
     const newData = serverData?.data?.map((item) => ({
       id: item.id,
@@ -188,11 +181,6 @@ const ServerListTable: React.FC = () => {
     }
   }, [serverData, filterStatus]);
 
-  const handleFilter = (status: string) => {
-    setFilterStatus(status === "all" ? null : status);
-    setParamGet((prevParamGet) => ({ ...prevParamGet, PageIndex: 1 }));
-  };
-
   return (
     <>
       <Descriptions
@@ -209,13 +197,10 @@ const ServerListTable: React.FC = () => {
         }}
       >
         <Button onClick={() => handleFilter("all")}>Tất cả</Button>
-        <Button onClick={() => handleFilter("Đang hoạt động")}>
-          Đang hoạt động
-        </Button>
-        <Button onClick={() => handleFilter("Tạm ngừng")}>Tạm ngừng</Button>
-        <Button onClick={() => handleFilter("Ngừng hoạt động")}>
-          Ngừng hoạt động
-        </Button>
+        <Button onClick={() => handleFilter("Ongoing")}>Đang hoạt động</Button>
+        <Button onClick={() => handleFilter("Stopped")}>Tạm ngừng</Button>
+        <Button onClick={() => handleFilter("Ended")}>Ngừng hoạt động</Button>
+        <Button onClick={() => handleFilter("Accepted")}>Chấp nhận</Button>
       </Space>
       <CreateNewServer />
       <Table

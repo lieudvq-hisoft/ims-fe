@@ -28,6 +28,9 @@ const apiLinks = {
   server: {
     get: `${url}/api/Server`,
   },
+  device: {
+    get: `${url}/api/Device`,
+  },
 };
 
 export default apiLinks;

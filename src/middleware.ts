@@ -83,6 +83,8 @@ export async function middleware(req: NextRequest) {
     case "/technical/maps":
     case "/technical/requests":
     case "/technical/serverlist":
+    case "/technical/devices":
+    case "/technical/appointment":
       if (
         !token ||
         !isExpiredTimeToken(token.loginDate, exp!) ||

@@ -14,7 +14,7 @@ const initialState: State = {
   serverDataLoading: false,
 };
 
-const TYPE_PREFIX = "server";
+const TYPE_PREFIX = "serverList";
 
 const getServerListData = createAsyncThunk(
   `${TYPE_PREFIX}/getServerListData`,
@@ -28,7 +28,7 @@ const getServerListData = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: "server",
+  name: "serverList",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

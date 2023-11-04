@@ -4,6 +4,7 @@ import location from "./location";
 import request from "./request";
 import myAccount from "./myAccount";
 import serverList from "./serverList";
+import device from "./device";
 
 export default {
   global,
@@ -12,4 +13,5 @@ export default {
   request,
   myAccount,
   serverList,
+  device,
 };
