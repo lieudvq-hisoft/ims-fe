@@ -13,15 +13,6 @@ import { ServerListData } from "@/models/serverList";
 import useSelector from "@/hooks/use-selector";
 
 export default function page() {
-  const dispatch = useDispatch();
-  const { data: session } = useSession();
-  const [paramGet, setParamGet] = useState<PaginationParam>({
-    PageIndex: 1,
-    PageSize: 10,
-  } as PaginationParam);
-
-  const { serverData } = useSelector((state) => state.serverList);
-
   return (
     <Home
       content={

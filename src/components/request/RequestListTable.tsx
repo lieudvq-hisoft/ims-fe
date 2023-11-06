@@ -1,9 +1,16 @@
 "use client";
-import React, { useState } from "react";
-import { Space, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
+import { Descriptions, Space, Table, Button, Pagination, Badge } from "antd";
+import type { DescriptionsProps } from "antd";
+
 import type { ColumnsType } from "antd/es/table";
 import useSelector from "@/hooks/use-selector";
 import { useRouter } from "next/navigation";
+import { PaginationParam } from "@/models/base";
+import { Request, RequestData } from "@/models/request";
+import useDispatch from "@/hooks/use-dispatch";
+import { useSession } from "next-auth/react";
+import { getRequestData } from "@/slices/request";
 
 interface DataType {
   id: string;
@@ -18,13 +25,75 @@ const RequestListTable: React.FC = () => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
+  const dispatch = useDispatch();
+  const { data: session } = useSession();
+  const [paramGet, setParamGet] = useState<PaginationParam>({
+    PageIndex: 1,
+    PageSize: 10,
+  } as PaginationParam);
+
   const { requestDataLoading, requestData } = useSelector(
     (state) => state.request
   );
 
+  const [filterStatus, setFilterStatus] = useState<string | null>(null);
+  const [filteredData, setFilteredData] = useState<Request[]>([]);
+
   const showEditTicketModal = () => {
     setOpen(true);
   };
+
+  const getData = () => {
+    dispatch(
+      getRequestData({
+        token: session?.user.access_token!,
+        paramGet: { ...paramGet },
+      })
+    ).then(({ payload }) => {
+      var res = payload as RequestData;
+      if (payload) {
+        var res = payload as RequestData;
+        if (res.totalPage < paramGet.PageIndex && res.totalPage != 0) {
+          setParamGet({ ...paramGet, PageIndex: res.totalPage });
+        }
+      }
+    });
+  };
+
+  useEffect(() => {
+    session && getData();
+  }, [session, paramGet]);
+
+  const handleFilter = (status: string) => {
+    setParamGet((prevParamGet) => ({
+      ...prevParamGet,
+      PageIndex: 1,
+      status: status === "all" ? null : status,
+    }));
+  };
+
+  const items: DescriptionsProps["items"] = [
+    {
+      key: "1",
+      label: "Tổng số thiết bị",
+      children: 0,
+    },
+    {
+      key: "2",
+      label: "Đang hoạt động",
+      children: 0,
+    },
+    {
+      key: "3",
+      label: "Tạm ngừng",
+      children: 0,
+    },
+    {
+      key: "4",
+      label: "Ngừng hoạt động",
+      children: 0,
+    },
+  ];
 
   const columns: ColumnsType<DataType> = [
     {
@@ -33,34 +102,58 @@ const RequestListTable: React.FC = () => {
       key: "dateCreated",
     },
     {
-      title: "Tên công ty",
+      title: "Người tạo",
       dataIndex: "companyName",
       key: "companyName",
       render: (text) => <a>{text}</a>,
     },
 
     {
-      title: "Loại yêu cầu",
+      title: "Dịch vụ",
       dataIndex: "type",
       key: "type",
+    },
+    {
+      title: "IP Server / Thiết bị",
+      dataIndex: "customerId",
+      key: "customerId",
     },
     {
       title: "Trạng thái",
       key: "status",
       dataIndex: "status",
-      render: (_, { status }) => {
-        let color = "green";
-        if (status === "Incomplete") {
-          color = "geekblue";
-        } else if (status === "Thất Bại") {
-          color = "volcano";
-        } else if (status === "Thành Công") {
-          color = "green";
+      render: (text) => {
+        let badgeStatus;
+
+        switch (text) {
+          case "Chờ xét duyệt":
+            badgeStatus = "processing";
+            break;
+          case "Đang hoạt động":
+            badgeStatus = "warning";
+            break;
+          case "Thành công":
+            badgeStatus = "success";
+            break;
+          case "Không thành công":
+            badgeStatus = "error";
+            break;
+          default:
+            badgeStatus = "default";
         }
+
         return (
-          <Tag color={color} key={status}>
-            {status.toUpperCase()}
-          </Tag>
+          <Badge
+            status={
+              badgeStatus as
+                | "error"
+                | "warning"
+                | "success"
+                | "default"
+                | "processing"
+            }
+            text={text}
+          />
         );
       },
     },
@@ -84,52 +177,72 @@ const RequestListTable: React.FC = () => {
   ];
 
   const data: DataType[] = [];
-  for (let i = 0; i < requestData?.data?.length; ++i) {
-    data.push({
-      id: requestData?.data[i].id,
-      dateCreated: requestData?.data[i].dateCreated,
-      companyName: requestData?.data[i].companyName,
-      type: requestData?.data[i].type,
-      customerId: requestData?.data[i].customerId,
-      status: requestData?.data[i].status,
-    });
-  }
-  // {
-  //   key: "1",
-  //   createAt: "2014-12-24 23:12:00",
-  //   company: "HiSoft",
-  //   request: "Thuê chỗ",
-  //   status: ["Thành Công"],
-  // },
-  // {
-  //   key: "2",
-  //   createAt: "2014-12-24 23:12:00",
-  //   company: "HiSoft",
-  //   request: "Cấp thêm IP",
-  //   status: ["Thất Bại"],
-  // },
-  // {
-  //   key: "3",
-  //   createAt: "2014-12-24 23:12:00",
-  //   company: "HiSoft",
-  //   request: "Cấp thêm PORT",
-  //   status: ["Đang Thực Hiện"],
-  // },
 
-  const onCreate = (values: any) => {
-    console.log("Received values of form: ", values);
-    setOpen(false);
-  };
+  useEffect(() => {
+    const newData = requestData?.data?.map((item) => ({
+      id: item.id,
+      dateCreated: item.dateCreated,
+      companyName: item.companyName,
+      type: item.type,
+      customerId: item.customerId,
+      status: item.status,
+    }));
+
+    if (filterStatus) {
+      setFilteredData(
+        newData?.filter((item) => item.status === filterStatus) ?? []
+      );
+    } else {
+      setFilteredData(newData ?? []);
+    }
+  }, [requestData, filterStatus]);
+
   return (
     <>
-      <Table loading={requestDataLoading} columns={columns} dataSource={data} />
-      {/* <EditTicketModal
-        open={open}
-        onCreate={onCreate}
-        onCancel={() => {
-          setOpen(false);
+      <Descriptions
+        column={4}
+        title="Thông số server"
+        items={items}
+        style={{ paddingLeft: "20px" }}
+      />
+      <Space
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "10px",
         }}
-      /> */}
+      >
+        <Button onClick={() => handleFilter("all")}>Tất cả</Button>
+        <Button onClick={() => handleFilter("Pending")}>Chờ xét duyệt</Button>
+        <Button onClick={() => handleFilter("Ongoing")}>Đang hoạt động</Button>
+        <Button onClick={() => handleFilter("Accepted")}>Thành công</Button>
+        <Button onClick={() => handleFilter("Denied")}>Không thành công</Button>
+        <Button onClick={() => handleFilter("Incomplete")}>
+          Chưa hoàn thiện
+        </Button>
+      </Space>
+      <Table
+        pagination={false}
+        loading={requestDataLoading}
+        columns={columns}
+        dataSource={filteredData}
+      />
+      {requestData.totalPage > 0 && (
+        <Pagination
+          style={{ paddingBottom: "15px" }}
+          className="text-end m-5"
+          current={paramGet.PageIndex}
+          pageSize={requestData.pageSize ?? 10}
+          total={requestData.totalSize}
+          onChange={(page, pageSize) => {
+            setParamGet((prevParamGet) => ({
+              ...prevParamGet,
+              PageIndex: page,
+              PageSize: pageSize,
+            }));
+          }}
+        />
+      )}
     </>
   );
 };

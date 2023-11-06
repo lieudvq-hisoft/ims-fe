@@ -23,13 +23,16 @@ const apiLinks = {
     get: `${url}/api/Location/Area`,
   },
   request: {
-    get: `${url}/api/ColocationRequest`,
+    get: `${url}/api/Request`,
   },
   server: {
     get: `${url}/api/Server`,
   },
   device: {
     get: `${url}/api/Device`,
+  },
+  appointment: {
+    get: `${url}/api/Appointment`,
   },
 };
 

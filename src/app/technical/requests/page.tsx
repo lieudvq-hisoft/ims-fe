@@ -10,46 +10,32 @@ import { useSession } from "next-auth/react";
 import { PaginationParam } from "@/models/base";
 import { getRequestData } from "@/slices/request";
 import { RequestData } from "@/models/request";
+import { Breadcrumb } from "antd";
 
 export default function page() {
-  const dispatch = useDispatch();
-  const { data: session } = useSession();
-  const [paramGet, setParamGet] = useState<PaginationParam>({
-    PageIndex: 1,
-    PageSize: 10,
-  } as PaginationParam);
-
-  const getData = () => {
-    dispatch(
-      getRequestData({
-        token: session?.user.access_token!,
-        paramGet: { ...paramGet },
-      })
-    ).then(({ payload }) => {
-      var res = payload as RequestData;
-      if (payload) {
-        var res = payload as RequestData;
-        if (res.totalPage < paramGet.PageIndex && res.totalPage != 0) {
-          setParamGet({ ...paramGet, PageIndex: res.totalPage });
-        }
-      }
-    });
-  };
-
-  useEffect(() => {
-    session && getData();
-  }, [session, paramGet]);
-
   return (
     <Home
       content={
         <>
+          <Breadcrumb
+            style={{ paddingTop: "10px", paddingLeft: "10px" }}
+            separator=">"
+            items={[
+              {
+                title: "Dashboard",
+              },
+              {
+                title: "Yêu cầu từ khách hàng",
+              },
+              {
+                title: "Xem danh sách",
+              },
+            ]}
+          />
           <div style={{ padding: "14px" }}>
-            <h1 style={{ paddingBottom: "10px", textAlign: "center" }}>
-              YÊU CẦU ĐÃ DUYỆT
-            </h1>
-            <SearchRequestList />
+            <h1 style={{ paddingBottom: "10px" }}>Danh sách yêu cầu</h1>
           </div>
+          <SearchRequestList />
           <div style={{ paddingTop: "10px" }}>
             <RequestListTable />
           </div>
