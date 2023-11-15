@@ -1,12 +1,23 @@
 "use client";
 import React, { useState } from "react";
-import { Button, Badge, Space, Table, Descriptions, Col, Row } from "antd";
+import {
+  Badge,
+  Table,
+  Descriptions,
+  Col,
+  Row,
+  Divider,
+  Card,
+  Typography,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { DescriptionsProps } from "antd";
 import CreateNewServer from "./CreateNewServer";
 import { useRouter } from "next/navigation";
 import useSelector from "@/hooks/use-selector";
 import { ServerList } from "@/models/serverList";
+
+const { Text } = Typography;
 
 interface DataType {
   key: React.Key;
@@ -97,47 +108,78 @@ const ServerDetailTable: React.FC = () => {
     },
   ];
 
-  const columns: ColumnsType<ServerList> = [
+  const ipTable: ColumnsType<ServerList> = [
     {
       title: "Ngày thực hiện",
       dataIndex: "dateCreated",
       key: "dateCreated",
     },
     {
-      title: "Thao tác",
+      title: "Nội dung",
       dataIndex: "dateUpdate",
       key: "dateUpdate",
     },
     {
-      title: "IP/Port",
+      title: "IP",
       dataIndex: "ipAddress",
       key: "ipAddress",
     },
     {
-      title: "Công suất (W) thay đổi",
+      title: "Trạng thái",
       dataIndex: "power",
       key: "power",
     },
     {
-      title: "Kích thước (U) thay đổi",
-      dataIndex: "size",
-      key: "size",
+      title: "Biên bản nghiệm thu",
+      key: "status",
+      dataIndex: "status",
+      render: (text) => {
+        let badgeStatus;
+
+        switch (text) {
+          case "Ngừng hoạt động":
+            badgeStatus = "error";
+            break;
+          case "Tạm ngừng":
+            badgeStatus = "warning";
+            break;
+          case "Đang hoạt động":
+            badgeStatus = "success";
+            break;
+          default:
+            badgeStatus = "default";
+        }
+
+        return (
+          <Badge
+            status={badgeStatus as "error" | "warning" | "success" | "default"}
+            text={text}
+          />
+        );
+      },
+    },
+  ];
+
+  const portTable: ColumnsType<ServerList> = [
+    {
+      title: "Ngày thực hiện",
+      dataIndex: "dateCreated",
+      key: "dateCreated",
     },
     {
-      title: "Người thực hiện",
-      dataIndex: "customer",
-      key: "customer",
+      title: "Nội dung",
+      dataIndex: "dateUpdate",
+      key: "dateUpdate",
     },
     {
-      title: "Người yêu cầu",
-      dataIndex: "customer",
-      key: "customer",
-      render: (text) => <a>{text}</a>,
+      title: "Port",
+      dataIndex: "ipAddress",
+      key: "ipAddress",
     },
     {
-      title: "Người xét duyệt",
-      dataIndex: "customer",
-      key: "customer",
+      title: "Trạng thái",
+      dataIndex: "power",
+      key: "power",
     },
     {
       title: "Biên bản nghiệm thu",
@@ -184,27 +226,62 @@ const ServerDetailTable: React.FC = () => {
 
   return (
     <>
+      <Descriptions
+        column={2}
+        items={[
+          {
+            key: "1",
+            label: <Text strong>Ngày tạo</Text>,
+            children: "15/03/2023 10:30",
+          },
+        ]}
+        style={{ paddingLeft: "20px" }}
+      />
+
       <Row>
-        <Col span={12}>
-          <Descriptions
-            column={2}
-            title="Thông số server"
-            items={items}
-            style={{ paddingLeft: "20px" }}
-          />
+        <Col style={{ paddingRight: "5px" }} span={12}>
+          <Card>
+            <Descriptions
+              column={2}
+              title="Thông số server"
+              items={items}
+              style={{ paddingLeft: "20px" }}
+            />
+          </Card>
         </Col>
-        <Col span={12}>
-          <Table columns={columns1} dataSource={data1} scroll={{ y: 170 }} />
+        <Col style={{ paddingLeft: "5px" }} span={12}>
+          <Card style={{ height: "300px" }}>
+            <Table
+              pagination={false}
+              columns={columns1}
+              dataSource={data1}
+              scroll={{ y: 170 }}
+            />
+          </Card>
         </Col>
       </Row>
-
+      <Divider orientation="center" plain>
+        Thống kê thiết bị
+      </Divider>
       <CreateNewServer />
-      <Table
-        loading={serverDataLoading}
-        columns={columns}
-        dataSource={data}
-        style={{ paddingLeft: "10px", paddingRight: "10px" }}
-      />
+      <Row>
+        <Col style={{ paddingRight: "5px" }} span={12}>
+          <Table
+            loading={serverDataLoading}
+            columns={ipTable}
+            dataSource={data}
+            style={{ paddingLeft: "10px", paddingRight: "10px" }}
+          />
+        </Col>
+        <Col style={{ paddingLeft: "5px" }} span={12}>
+          <Table
+            loading={serverDataLoading}
+            columns={portTable}
+            dataSource={data}
+            style={{ paddingLeft: "10px", paddingRight: "10px" }}
+          />
+        </Col>
+      </Row>
     </>
   );
 };

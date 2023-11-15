@@ -3,7 +3,7 @@
 "use client";
 import React from "react";
 import Home from "@/app/home/page";
-import { Breadcrumb } from "antd";
+import { Breadcrumb, Divider } from "antd";
 import ServerDetailTable from "@/components/serverlist/ServerDetailTable";
 
 export default function page() {
@@ -33,6 +33,7 @@ export default function page() {
           <div style={{ paddingLeft: "10px" }}>
             <h1 style={{ paddingBottom: "10px" }}>IP Server</h1>
           </div>
+          <Divider plain></Divider>
           <div style={{ paddingTop: "10px" }}>
             <ServerDetailTable />
           </div>

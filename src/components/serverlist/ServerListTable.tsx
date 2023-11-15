@@ -1,6 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button, Badge, Space, Table, Descriptions, Pagination } from "antd";
+import {
+  Button,
+  Badge,
+  Space,
+  Table,
+  Descriptions,
+  Pagination,
+  Divider,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { DescriptionsProps } from "antd";
 import CreateNewServer from "./CreateNewServer";
@@ -149,11 +157,11 @@ const ServerListTable: React.FC = () => {
       render: (_, record) => (
         <Space size="middle">
           <a
-            onClick={(e) => {
-              router.push(`/technical/serverlist/server-detail`);
-            }}
+            onClick={() =>
+              router.push(`/technical/serverlist/server-detail/${record.id}`)
+            }
           >
-            Chi tiết{" "}
+            Chi tiết
           </a>
         </Space>
       ),
@@ -189,6 +197,9 @@ const ServerListTable: React.FC = () => {
         items={items}
         style={{ paddingLeft: "20px" }}
       />
+      <Divider orientation="center" plain>
+        Thống kê Server
+      </Divider>
       <Space
         style={{
           display: "flex",
