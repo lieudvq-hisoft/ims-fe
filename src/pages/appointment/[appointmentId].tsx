@@ -259,47 +259,51 @@ const Appoinment: React.FC = () => {
               <BreadcrumbComponent itemBreadcrumbs={itemBreadcrumbs} />
             </div>
             <AppointmentDetail appointmentDetail={appointmentDetail!} />
-            <div className="w-full md:m-5 md:flex">
-              <div className="md:w-1/2 md:pr-5">
-                <UploadComponent
-                  fileList={fileInspectionReport}
-                  title="Inspection report"
-                  setFileList={setFileInspectionReport}
-                  multiple={false}
-                  maxCount={1}
-                  disabled={setDisabledInspectionReport}
-                />
-              </div>
-              <div className="md:w-1/2 md:pl-5 h-28">
-                <UploadComponent
-                  fileList={fileReceiptOfRecipient}
-                  title="Receipt of recipient"
-                  setFileList={setFileReceiptOfRecipient}
-                  multiple={false}
-                  maxCount={1}
-                  disabled={setDisabledReceiptOfRecipient}
-                />
-              </div>
-            </div>
-            <Button
-              icon={<UploadOutlined />}
-              loading={loadingUploadDocument}
-              className="w-full m-5"
-              type="primary"
-              disabled={
-                !Boolean(
-                  fileInspectionReport.length > 0 &&
-                    fileReceiptOfRecipient.length > 0
-                ) ||
-                disabledInspectionReport ||
-                disabledReceiptOfRecipient
-              }
-              onClick={() => {
-                uploadDocument();
-              }}
-            >
-              Upload
-            </Button>
+            {appointmentDetail?.status === "Accepted" && (
+              <>
+                <div className="w-full md:m-5 md:flex">
+                  <div className="md:w-1/2 md:pr-5">
+                    <UploadComponent
+                      fileList={fileInspectionReport}
+                      title="Inspection report"
+                      setFileList={setFileInspectionReport}
+                      multiple={false}
+                      maxCount={1}
+                      disabled={setDisabledInspectionReport}
+                    />
+                  </div>
+                  <div className="md:w-1/2 md:pl-5 h-28">
+                    <UploadComponent
+                      fileList={fileReceiptOfRecipient}
+                      title="Receipt of recipient"
+                      setFileList={setFileReceiptOfRecipient}
+                      multiple={false}
+                      maxCount={1}
+                      disabled={setDisabledReceiptOfRecipient}
+                    />
+                  </div>
+                </div>
+                <Button
+                  icon={<UploadOutlined />}
+                  loading={loadingUploadDocument}
+                  className="w-full m-5"
+                  type="primary"
+                  disabled={
+                    !Boolean(
+                      fileInspectionReport.length > 0 &&
+                        fileReceiptOfRecipient.length > 0
+                    ) ||
+                    disabledInspectionReport ||
+                    disabledReceiptOfRecipient
+                  }
+                  onClick={() => {
+                    uploadDocument();
+                  }}
+                >
+                  Upload
+                </Button>
+              </>
+            )}
           </div>
           <RequestUpgradeTable
             urlOncell=""
