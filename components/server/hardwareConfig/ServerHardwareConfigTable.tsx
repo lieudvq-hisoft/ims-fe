@@ -39,7 +39,6 @@ const ServerHardwareConfigTable: React.FC<Props> = (props) => {
       key: "id",
       fixed: "left",
     },
-    // { title: "Description", dataIndex: "description", key: "description" },
     {
       title: "Component",
       key: "component",
@@ -47,27 +46,28 @@ const ServerHardwareConfigTable: React.FC<Props> = (props) => {
         <p>{`${record.component?.name} - ${record.component?.unit} - ${record.component?.type}`}</p>
       ),
     },
+    { title: "Information", dataIndex: "information", key: "information" },
     { title: "Capacity", dataIndex: "capacity", key: "capacity" },
     { title: "Date Created", dataIndex: "dateCreated", key: "dateCreated" },
     { title: "Date Updated", dataIndex: "dateUpdated", key: "dateUpdated" },
-    {
-      title: "Action",
-      key: "operation",
-      render: (record: ServerHardwareConfig) => (
-        <Space wrap>
-          <Tooltip title="Edit" color={"black"}>
-            <Button onClick={() => onEdit(record)}>
-              <BiEdit />
-            </Button>
-          </Tooltip>
-          <Tooltip title="Delete" color={"black"}>
-            <Button onClick={() => onDelete(record)}>
-              <AiFillDelete />
-            </Button>
-          </Tooltip>
-        </Space>
-      ),
-    },
+    // {
+    //   title: "Action",
+    //   key: "operation",
+    //   render: (record: ServerHardwareConfig) => (
+    //     <Space wrap>
+    //       <Tooltip title="Edit" color={"black"}>
+    //         <Button onClick={() => onEdit(record)}>
+    //           <BiEdit />
+    //         </Button>
+    //       </Tooltip>
+    //       <Tooltip title="Delete" color={"black"}>
+    //         <Button onClick={() => onDelete(record)}>
+    //           <AiFillDelete />
+    //         </Button>
+    //       </Tooltip>
+    //     </Space>
+    //   ),
+    // },
   ];
 
   const data: DataType[] = [];
