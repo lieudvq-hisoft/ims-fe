@@ -362,42 +362,44 @@ const ProductInfoPage: React.FC<Props> = (props) => {
             onReload={fetchProductTemplateInfoData}
           />
           <Card style={{ borderWidth: "5px" }}>
-            <div className="absolute right-5 z-10">
-              <Image
-                style={{
-                  width: "100px",
-                  height: "100px",
-                }}
-                src={`${
-                  productTemplateInfo?.imageUrl
-                    ? `${url}/${productTemplateInfo?.imageUrl}`
-                    : `${imageNotFound}`
-                }`}
-              />
-              <Upload
-                showUploadList={false}
-                className=" absolute bottom-0 left-0 z-20"
-                beforeUpload={(file) => {
-                  updateImage(file);
-                }}
-              >
-                <Button shape="circle" type="dashed">
-                  <MdEdit className="cursor-pointer"></MdEdit>
-                </Button>
-              </Upload>
-              <div className=" absolute bottom-0 right-0 z-20">
-                <Popconfirm
-                  title="Sure to delete image?"
-                  onConfirm={() => {
-                    deleteImage();
+            {Boolean(productId !== "new") && (
+              <div className="absolute right-5 z-10">
+                <Image
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                  }}
+                  src={`${
+                    productTemplateInfo?.imageUrl
+                      ? `${url}/${productTemplateInfo?.imageUrl}`
+                      : `${imageNotFound}`
+                  }`}
+                />
+                <Upload
+                  showUploadList={false}
+                  className=" absolute bottom-0 left-0 z-20"
+                  beforeUpload={(file) => {
+                    updateImage(file);
                   }}
                 >
                   <Button shape="circle" type="dashed">
-                    <MdDelete className="cursor-pointer"></MdDelete>
+                    <MdEdit className="cursor-pointer"></MdEdit>
                   </Button>
-                </Popconfirm>
+                </Upload>
+                <div className=" absolute bottom-0 right-0 z-20">
+                  <Popconfirm
+                    title="Sure to delete image?"
+                    onConfirm={() => {
+                      deleteImage();
+                    }}
+                  >
+                    <Button shape="circle" type="dashed">
+                      <MdDelete className="cursor-pointer"></MdDelete>
+                    </Button>
+                  </Popconfirm>
+                </div>
               </div>
-            </div>
+            )}
             <Form
               onValuesChange={(value: FormName) => {
                 setIsChanged(true);
