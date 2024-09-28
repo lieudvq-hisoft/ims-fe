@@ -519,6 +519,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                       }
                     >
                       <DatePicker
+                        disabled={Boolean(stockPickingInfo?.state === "Done")}
                         allowClear={false}
                         showTime
                         value={scheduledDate ? dayjs(scheduledDate) : undefined}
@@ -588,6 +589,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                         dropdownMatchSelectWidth={false}
                         style={{ width: "100%" }}
                         variant="filled"
+                        disabled={Boolean(stockPickingInfo?.state === "Done")}
                       >
                         {locationOptions.map((option) => (
                           <Option key={option.value} value={option.value}>
@@ -631,6 +633,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                       }
                     >
                       <DatePicker
+                        disabled={Boolean(stockPickingInfo?.state === "Done")}
                         allowClear={false}
                         showTime
                         value={dateDeadline ? dayjs(dateDeadline) : undefined}
