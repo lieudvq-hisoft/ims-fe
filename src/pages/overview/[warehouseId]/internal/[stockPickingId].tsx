@@ -498,6 +498,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                       }
                     >
                       <DatePicker
+                        disabled={Boolean(stockPickingInfo?.state === "Done")}
                         allowClear={false}
                         showTime
                         value={scheduledDate ? dayjs(scheduledDate) : undefined}
@@ -532,6 +533,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                       }
                     >
                       <Select
+                        disabled={Boolean(stockPickingInfo?.state === "Done")}
                         showSearch
                         optionFilterProp="children"
                         dropdownMatchSelectWidth={false}
@@ -566,7 +568,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                     ) : undefined}
                   </Col>
                   <Col span={12}>
-                    <Form.Item
+                    {/* <Form.Item
                       labelCol={{ xl: 8 }}
                       label={
                         <p
@@ -590,7 +592,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                         disabled
                         placeholder="Effective Date"
                       />
-                    </Form.Item>
+                    </Form.Item> */}
                   </Col>
                 </Row>
                 <Row gutter={24}>
@@ -616,6 +618,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                       }
                     >
                       <Select
+                        disabled={Boolean(stockPickingInfo?.state === "Done")}
                         showSearch
                         optionFilterProp="children"
                         dropdownMatchSelectWidth={false}
@@ -664,6 +667,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                       }
                     >
                       <DatePicker
+                        disabled={Boolean(stockPickingInfo?.state === "Done")}
                         allowClear={false}
                         showTime
                         value={dateDeadline ? dayjs(dateDeadline) : undefined}
