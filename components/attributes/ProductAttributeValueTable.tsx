@@ -66,6 +66,10 @@ const ProductAttributeValueTable: React.FC<Props> = (props) => {
     const newValue = event.target.value;
     switch (type) {
       case "name":
+        if (!Boolean(newValue)) {
+          message.error("Please enter name of Uom!");
+          return;
+        }
         if (newValue !== record.name) {
           await updateProductAttributeValue({
             id: record.id,
@@ -90,7 +94,7 @@ const ProductAttributeValueTable: React.FC<Props> = (props) => {
     });
     setData(newData);
   };
-  
+
   const createProductAttributeValue = async () => {
     await productAttributeValueServices
       .createProductAttributeValue(accessToken, {
