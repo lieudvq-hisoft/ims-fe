@@ -68,6 +68,10 @@ const AttributeInfoPage: React.FC<Props> = (props) => {
   }, []);
 
   const updateProductAttributeInfo = async () => {
+    if (!Boolean(productAttributeName)) {
+      message.error("Please enter name of Attribute!");
+      return;
+    }
     await productAttributeServices
       .updateProductAttribute(accessToken, {
         id: attributeId,

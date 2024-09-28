@@ -7,13 +7,7 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { getSession } from "next-auth/react";
 import UomUomTable from "@components/units-of-measure/UomUomTable";
-import {
-  Form,
-  Input,
-  Pagination,
-  Tabs,
-  message,
-} from "antd";
+import { Form, Input, Pagination, Tabs, message } from "antd";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { UomCategoryInfo, UomCategoryUpdateInfo } from "@models/uomCategory";
@@ -71,6 +65,10 @@ const UnitsOfMeasureInfo: React.FC<Props> = (props) => {
   }, []);
 
   const updateUomCategoryInfo = async () => {
+    if (!Boolean(uomCategoryName)) {
+      message.error("Please enter name of Unit of Measure Category!");
+      return;
+    }
     await uomCategoryServices
       .updateUomCategoryInfo(accessToken, {
         id: uomCategoryId,
@@ -132,7 +130,10 @@ const UnitsOfMeasureInfo: React.FC<Props> = (props) => {
                 key: uomCategoryId,
                 children: (
                   <>
-                    <UomUomTable accessToken={accessToken} categoryId={uomCategoryId} />
+                    <UomUomTable
+                      accessToken={accessToken}
+                      categoryId={uomCategoryId}
+                    />
                     {data?.length > 0 && (
                       <Pagination
                         className="text-end m-4"
