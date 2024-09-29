@@ -173,6 +173,7 @@ const ProductTemplateKanban: React.FC<Props> = (props) => {
                 cover={
                   <Space onClick={(e) => e.stopPropagation()}>
                     <Image
+                      height={200}
                       src={`${
                         pt.imageUrl
                           ? `${url}/${pt.imageUrl}`
