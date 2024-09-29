@@ -418,7 +418,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
               >
                 <Row gutter={24}>
                   <Col span={12}>
-                    <Form.Item
+                    {/* <Form.Item
                       labelCol={{ xl: 8 }}
                       name="partnerId"
                       label={
@@ -439,37 +439,7 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                         style={{ width: "100%" }}
                         variant="filled"
                       ></Select>
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      labelCol={{ xl: 8 }}
-                      label={
-                        <p
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "500",
-                          }}
-                        >
-                          Scheduled Date
-                        </p>
-                      }
-                    >
-                      <DatePicker
-                        disabled={Boolean(stockPickingInfo?.state === "Done")}
-                        allowClear={false}
-                        showTime
-                        value={scheduledDate ? dayjs(scheduledDate) : undefined}
-                        format={dateAdvFormat}
-                        onChange={(date) => {
-                          handleScheduledDateChange(date);
-                        }}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
+                    </Form.Item> */}
                     <Form.Item
                       labelCol={{ xl: 8 }}
                       name="pickingTypeId"
@@ -506,6 +476,35 @@ const ProductInfoPage: React.FC<Props> = (props) => {
                       </Select>
                     </Form.Item>
                   </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      labelCol={{ xl: 8 }}
+                      label={
+                        <p
+                          style={{
+                            fontSize: "14px",
+                            fontWeight: "500",
+                          }}
+                        >
+                          Scheduled Date
+                        </p>
+                      }
+                    >
+                      <DatePicker
+                        disabled={Boolean(stockPickingInfo?.state === "Done")}
+                        allowClear={false}
+                        showTime
+                        value={scheduledDate ? dayjs(scheduledDate) : undefined}
+                        format={dateAdvFormat}
+                        onChange={(date) => {
+                          handleScheduledDateChange(date);
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Row gutter={24}>
+                  <Col span={12}></Col>
                   <Col span={12}>
                     {/* <Form.Item
                       labelCol={{ xl: 8 }}
