@@ -96,7 +96,7 @@ const Attributes: React.FC<Props> = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Please input the name of Unit of Measure Category!",
+                  message: "Please input the name of Attribute!",
                 },
               ]}
             >
