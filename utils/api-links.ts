@@ -1,13 +1,13 @@
-export const url = "https://imsapi.hisoft.vn";
-export const urlNoti = "https://ims.hisoft.vn";
+export const url = "https://dbsapi.solocode.click";
+export const urlNoti = "https://dbsnotificationapi.solocode.click";
 
-export const urlServerSide = "http://192.168.40.83:8001";
+// export const urlServerSide = "http://192.168.40.83:8001";
 // chạy deploy thì sài url trên
 
 // chạy local thì sài url dưới
-// export const urlServerSide = "https://imsapi.hisoft.vn";
+export const urlServerSide = "https://dbsapi.solocode.click";
 
-export const urlImageLinkHost = "https://imsapi.hisoft.vn/";
+export const urlImageLinkHost = "https://dbsapi.solocode.click/";
 
 const apiLinks = {
   component: {
